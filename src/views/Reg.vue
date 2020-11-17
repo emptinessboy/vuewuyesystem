@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-    <h1>用户登录</h1>
     <el-form
       :model="ruleForm"
       status-icon
@@ -38,7 +37,7 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Reg",
   data() {
     let checkAge = (rule, value, callback) => {
       if (!value) {
