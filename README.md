@@ -1,4 +1,6 @@
-# VUE-物业管理系统前端
+# 此分支用于快速启动 VUE2 + ELEMENT UI
+
+## 已经配置了 vue + normalize-scss + element
 
 vue2-element
 
