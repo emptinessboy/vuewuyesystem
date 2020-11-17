@@ -1,9 +1,13 @@
 <template>
   <div>
+    <!--除去顶部navbar的内容，包含次级顶栏和侧边栏和content区块-->
     <el-container style="height:100%; border: 0px solid #eee">
       <side-bar></side-bar>
+      <!--侧边栏过渡动画加入-->
       <transition name="el-fade-in-linear">
         <el-container>
+          <!--次级顶栏-->
+          <!--showbar参数使用eventbus传递-->
           <el-header
             :class="{ secheader: showbar }"
             style="text-align: left; font-size: 12px; position: fixed; z-index:8; width: 100%;"
@@ -12,24 +16,19 @@
               @click="changeshowbar"
               style="cursor:pointer; width: 100px; font-size: 25px;"
             >
-              <!--鼠标移动变成手形-->
+              <!--鼠标移动变成手形 cursor:pointer-->
               <i :class="munuinfo" style="margin-right: 5px"></i>
+              <span style="font-size: 1px;line-height: 60px;">{{
+                munuinfotext
+              }}</span>
             </div>
           </el-header>
-
-          <el-main>
-            <div style="height: 60px;"></div>
-            <el-table :data="tableData">
-              <el-table-column prop="date" label="日期" width="140">
-              </el-table-column>
-              <el-table-column prop="name" label="姓名" width="120">
-              </el-table-column>
-              <el-table-column prop="address" label="地址"> </el-table-column>
-            </el-table>
-          </el-main>
+          <dash-content></dash-content>
         </el-container>
       </transition>
     </el-container>
+
+    <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
     <div class="eidtbutton">
       <el-dropdown>
         <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
@@ -45,17 +44,10 @@
           <el-dropdown-item>删除</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!--      <el-button-->
-      <!--        style="width: 50px;height: 50px;"-->
-      <!--        type="primary"-->
-      <!--        icon="el-icon-edit"-->
-      <!--        circle-->
-      <!--        @click="changeshowbar"-->
-      <!--      ></el-button>-->
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .eidtbutton {
   position: fixed;
   z-index: 10;
@@ -77,20 +69,21 @@
 <script>
 import Event from "@/uitls/public";
 import SideBar from "@/components/SideBar";
+// 懒加载组件
+const DashContent = () => import("@/components/DashContent");
 
 export default {
   name: "DashBoard",
-  components: { SideBar },
+  components: {
+    DashContent,
+    SideBar
+  },
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
-    };
     return {
       showbar: true,
       munuinfo: "el-icon-s-fold",
-      tableData: Array(20).fill(item)
+      munuinfotext: "收拢",
+      screenWidth: ""
     };
   },
   computed: {},
@@ -102,17 +95,30 @@ export default {
     }
   },
   mounted() {
-    //在模板编译完成后执行
+    //在模板编译完成后执行 使用eventbus传递侧边栏是否开启信息
     Event.$on("isshowbar", showbar => {
       this.showbar = showbar; //箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
     });
+    //监控屏幕尺寸实现响应式菜单栏
+    window.onresize = () => {
+      this.screenWidth = document.body.clientWidth;
+      if (this.screenWidth <= 768) {
+        //传递事件将 isshowbar 变为 false，使页面响应，左侧边栏隐藏
+        Event.$emit("isshowbar", false);
+      } else {
+        Event.$emit("isshowbar", true);
+      }
+      // console.log("当前屏幕尺寸为： "+this.screenWidth);
+    };
   },
   watch: {
     showbar(val) {
-      if (val == true) {
+      if (val === true) {
         this.munuinfo = "el-icon-s-fold";
+        this.munuinfotext = "收拢";
       } else {
         this.munuinfo = "el-icon-s-unfold";
+        this.munuinfotext = "展开";
       }
     }
   }
