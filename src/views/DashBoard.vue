@@ -54,9 +54,11 @@
           <span @click="changeshoweidt"
             ><el-dropdown-item>修改</el-dropdown-item></span
           >
-          <el-dropdown-item>新增</el-dropdown-item>
           <span @click="changeshowdelete"
             ><el-dropdown-item>删除</el-dropdown-item></span
+          >
+          <span @click="quiteidt"
+            ><el-dropdown-item>查看</el-dropdown-item></span
           >
         </el-dropdown-menu>
       </el-dropdown>
@@ -129,10 +131,10 @@ export default {
         this.showdelete = false;
       }
     },
-    quiteidt(){
+    quiteidt() {
       this.showeidt = false;
       this.showdelete = false;
-      console.log("退出编辑模式成功")
+      console.log("退出编辑模式成功");
     }
   },
   mounted() {

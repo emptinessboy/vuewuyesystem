@@ -140,6 +140,7 @@ export default {
   props: ["showdelete", "showeidt"],
   methods: {
     deleteRow(cno, index, rows) {
+      let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteno = {
         method: "delete",
@@ -147,12 +148,33 @@ export default {
       };
       axios
         .post("http://127.0.0.1:8080/api/listmembers", qs.stringify(deleteno))
-        .then(response => {
-          console.log("删除成功：", cno, response);
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            type: "warning"
+          });
         })
-        .finally(function() {
-          rows.splice(index, 1);
-        });
+        .then(response => {
+          if (response.status != 200) {
+            this.$message({
+              showClose: true,
+              message: "警告哦，删除失败，请检查服务端和数据库",
+              type: "warning"
+            });
+            console.log("删除失败：", cno, response.status);
+          } else {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，删除记录成功",
+              type: "success"
+            });
+            console.log("删除成功：", cno, response.status);
+            rows.splice(index, 1);
+          }
+        })
+        .finally(function() {});
     },
     eidtRow(cno) {
       this.eidtindex = cno;
@@ -170,6 +192,14 @@ export default {
     // 将this保存在that中，再在函数中使用that均可
     axios
       .get("http://127.0.0.1:8080/api/listmembers")
+      .catch(function(error) {
+        console.log("获取数据：", error);
+        that.$message({
+          showClose: true,
+          message: "连接服务器端失败，请检查网络： " + error,
+          type: "warning"
+        });
+      })
       .then(response => {
         that.tableData = response.data;
       })
@@ -180,6 +210,7 @@ export default {
       //绑定搜索的字符串
       search: "",
       eidtindex: "",
+      loading: true,
       //获得axios的response前tableData值为null
       tableData: null
     };
