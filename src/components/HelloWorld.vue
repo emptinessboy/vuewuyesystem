@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <form action="http://127.0.0.1:8080/api/listmembers" method="post">
+      <input type="number" name="cno" value="666"/>
+      <input type="submit">
+    </form>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the

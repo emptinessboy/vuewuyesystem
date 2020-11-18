@@ -11,8 +11,7 @@
       "
       style="width: 100%;height: 100%;"
     >
-      <el-table-column prop="cno" label="用户ID" width="150">
-      </el-table-column>
+      <el-table-column prop="cno" label="用户ID" width="150"> </el-table-column>
       <el-table-column prop="cname" label="用户姓名" width="120">
         <template slot-scope="scope">
           <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
@@ -21,7 +20,9 @@
             v-show="scope.row.cno == eidtindex && showeidt"
             v-model="scope.row.cname"
           ></el-input>
-          <span v-show="scope.row.cno != eidtindex || showeidt == false">{{ scope.row.cname }}</span>
+          <span v-show="scope.row.cno != eidtindex || showeidt == false">{{
+            scope.row.cname
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="csex" label="性别" width="120">
@@ -39,7 +40,9 @@
             <el-option value="女">女</el-option>
           </el-select>
 
-          <span v-show="scope.row.cno != eidtindex || showeidt == false">{{ scope.row.csex }}</span>
+          <span v-show="scope.row.cno != eidtindex || showeidt == false">{{
+            scope.row.csex
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="caddress" label="用户住址" width="120">
@@ -85,7 +88,9 @@
         <template slot-scope="scope">
           <el-button
             style="float: right"
-            @click.native.prevent="deleteRow(scope.$index, tableData)"
+            @click.native.prevent="
+              deleteRow(scope.row.cno, scope.$index, tableData)
+            "
             type="danger"
             size="small"
           >
@@ -129,13 +134,25 @@
 
 <script>
 import axios from "axios";
+import qs from "qs";
 export default {
   name: "MemberList",
   props: ["showdelete", "showeidt"],
   methods: {
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
-      console.log("删除成功");
+    deleteRow(cno, index, rows) {
+      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+      let deleteno = {
+        method: "delete",
+        cno: cno
+      };
+      axios
+        .post("http://127.0.0.1:8080/api/listmembers", qs.stringify(deleteno))
+        .then(response => {
+          console.log("删除成功：", cno, response);
+        })
+        .finally(function() {
+          rows.splice(index, 1);
+        });
     },
     eidtRow(cno) {
       this.eidtindex = cno;
