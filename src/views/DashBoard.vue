@@ -12,6 +12,15 @@
             :class="{ secheader: showbar }"
             style="text-align: left; font-size: 12px; position: fixed; z-index:8; width: 100%;"
           >
+            <el-button
+              type="info"
+              plain
+              style="float: right; margin-top: 10px;"
+              :class="{ quitbutton: showbar }"
+              v-show="showdelete | showeidt"
+              @click="quiteidt"
+              >退出编辑</el-button
+            >
             <div
               @click="changeshowbar"
               style="cursor:pointer; width: 100px; font-size: 25px;"
@@ -23,7 +32,10 @@
               }}</span>
             </div>
           </el-header>
-          <dash-content></dash-content>
+          <dash-content
+            :showdelete="showdelete"
+            :showeidt="showeidt"
+          ></dash-content>
         </el-container>
       </transition>
     </el-container>
@@ -39,9 +51,13 @@
           circle
         ></el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>查看</el-dropdown-item>
+          <span @click="changeshoweidt"
+            ><el-dropdown-item>修改</el-dropdown-item></span
+          >
           <el-dropdown-item>新增</el-dropdown-item>
-          <el-dropdown-item>删除</el-dropdown-item>
+          <span @click="changeshowdelete"
+            ><el-dropdown-item>删除</el-dropdown-item></span
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -57,6 +73,9 @@
 .secheader {
   /*动态计算左边栏收起时宽度*/
   width: calc(100% - 120px);
+}
+.quitbutton {
+  margin-right: 120px;
 }
 .el-header {
   /*element默认样式，用于这里的次级header*/
@@ -81,6 +100,8 @@ export default {
   data() {
     return {
       showbar: true,
+      showdelete: false,
+      showeidt: false,
       munuinfo: "el-icon-s-fold",
       munuinfotext: "收拢",
       screenWidth: ""
@@ -92,6 +113,26 @@ export default {
       this.showbar = !this.showbar;
       console.log("是否显示侧边栏： " + this.showbar);
       Event.$emit("isshowbar", this.showbar);
+    },
+    //控制是否显示编辑列表，通过props的showeitd
+    changeshowdelete() {
+      this.showdelete = !this.showdelete;
+      console.log("显示删除控件？ " + this.showdelete);
+      if (this.showdelete === true) {
+        this.showeidt = false;
+      }
+    },
+    changeshoweidt() {
+      this.showeidt = !this.showeidt;
+      console.log("显示编辑控件？ " + this.showeidt);
+      if (this.showeidt === true) {
+        this.showdelete = false;
+      }
+    },
+    quiteidt(){
+      this.showeidt = false;
+      this.showdelete = false;
+      console.log("退出编辑模式成功")
     }
   },
   mounted() {
