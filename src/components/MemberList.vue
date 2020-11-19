@@ -79,11 +79,11 @@
       <el-table-column
         fixed="right"
         label="操作"
-        width="180"
+        width="130"
         v-if="this.showdelete"
       >
         <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="输入姓名搜索" />
+          <el-input v-model="search" size="mini" placeholder="输入姓名搜索"/>
         </template>
         <template slot-scope="scope">
           <el-button
@@ -101,7 +101,7 @@
       <el-table-column
         fixed="right"
         label="操作"
-        width="180"
+        width="155"
         v-if="this.showeidt"
       >
         <template slot="header">
@@ -118,7 +118,7 @@
           </el-button>
           <el-button
             style="float: right"
-            @click.native.prevent="saveRow(scope.row.cno)"
+            @click.native.prevent="saveRow(scope.row)"
             type="success"
             size="small"
             v-show="eidtindex == scope.row.cno"
@@ -180,9 +180,45 @@ export default {
       this.eidtindex = cno;
       console.log("进入编辑模式成功");
     },
-    saveRow(cno) {
+    saveRow(row) {
+      // console.log(row);
+      let that = this;
+      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+      let eidtno = {
+        method: "modify",
+        row: row
+      };
+      axios
+        .post("http://127.0.0.1:8080/api/listmembers", qs.stringify(eidtno))
+        .catch(function(error) {
+          console.log("保存失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，保存失败,错误原因：" + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          if (response.status != 200) {
+            this.$message({
+              showClose: true,
+              message: "警告哦，保存失败，请检查服务端和数据库",
+              type: "warning"
+            });
+            console.log("保存失败：", response.status);
+          } else {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，保存数据成功",
+              type: "success"
+            });
+            console.log("保存成功：",response.status);
+          }
+        })
+        .finally(function() {});
+      //去除编辑框，改为显示span
       this.eidtindex = "";
-      console.log("进入编辑模式成功");
+      console.log("保存数据到数据库成功");
     }
   },
   created() {
