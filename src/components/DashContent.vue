@@ -2,18 +2,26 @@
 <template>
   <el-main>
     <div style="height: 60px;"></div>
-    <MemberList :showdelete="this.showdelete" :showeidt="this.showeidt"></MemberList>
+    <!--实现动态路由-->
+    <MemberList
+      v-if="this.$route.path === '/dashboard/memberlist'"
+      :showdelete="this.showdelete"
+      :showeidt="this.showeidt"
+    ></MemberList>
+    <AddMember
+        v-if="this.$route.path === '/dashboard/addmember'"
+    ></AddMember>
   </el-main>
 </template>
 
 <script>
 import MemberList from "@/components/MemberList";
+import AddMember from "@/components/AddMember";
 export default {
   name: "DashContent",
-  props: ['showdelete','showeidt'],
-  components: { MemberList },
-  created() {
-  }
+  props: ["showdelete", "showeidt"],
+  components: {AddMember, MemberList },
+  created() {}
 };
 </script>
 

@@ -76,6 +76,8 @@
         </template>
       </el-table-column>
 
+      <el-table-column prop="cmoney" label="剩余物业费" width="100"> </el-table-column>
+
       <el-table-column
         fixed="right"
         label="操作"
@@ -83,7 +85,7 @@
         v-if="this.showdelete"
       >
         <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="输入姓名搜索"/>
+          <el-input v-model="search" size="mini" placeholder="输入姓名搜索" />
         </template>
         <template slot-scope="scope">
           <el-button
@@ -212,7 +214,7 @@ export default {
               message: "恭喜你，保存数据成功",
               type: "success"
             });
-            console.log("保存成功：",response.status);
+            console.log("保存成功：", response.status);
           }
         })
         .finally(function() {});

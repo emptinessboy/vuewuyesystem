@@ -17,7 +17,7 @@
               plain
               style="float: right; margin-top: 10px;"
               :class="{ quitbutton: showbar }"
-              v-show="showdelete | showeidt"
+              v-show="showdelete || showeidt"
               @click="quiteidt"
               >退出编辑</el-button
             >
@@ -57,9 +57,11 @@
           <span @click="changeshowdelete"
             ><el-dropdown-item>删除</el-dropdown-item></span
           >
-          <span @click="quiteidt"
-            ><el-dropdown-item>查看</el-dropdown-item></span
-          >
+          <span @click="quiteidt">
+            <el-dropdown-item :disabled="!(showdelete || showeidt)"
+              >查看</el-dropdown-item
+            >
+          </span>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -111,6 +113,16 @@ export default {
   },
   computed: {},
   methods: {
+    screenfit() {
+      this.screenWidth = document.body.clientWidth;
+      if (this.screenWidth <= 768) {
+        //传递事件将 isshowbar 变为 false，使页面响应，左侧边栏隐藏
+        Event.$emit("isshowbar", false);
+      } else {
+        Event.$emit("isshowbar", true);
+      }
+      // console.log("当前屏幕尺寸为： "+this.screenWidth);
+    },
     changeshowbar() {
       this.showbar = !this.showbar;
       console.log("是否显示侧边栏： " + this.showbar);
@@ -142,16 +154,10 @@ export default {
     Event.$on("isshowbar", showbar => {
       this.showbar = showbar; //箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
     });
+    this.screenfit();
     //监控屏幕尺寸实现响应式菜单栏
     window.onresize = () => {
-      this.screenWidth = document.body.clientWidth;
-      if (this.screenWidth <= 768) {
-        //传递事件将 isshowbar 变为 false，使页面响应，左侧边栏隐藏
-        Event.$emit("isshowbar", false);
-      } else {
-        Event.$emit("isshowbar", true);
-      }
-      // console.log("当前屏幕尺寸为： "+this.screenWidth);
+      this.screenfit();
     };
   },
   watch: {

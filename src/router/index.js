@@ -16,7 +16,8 @@ const routes = [
     component: () => import("../views/Login")
   },
   {
-    path: "/dashboard",
+    //实现动态路由，根据参数进入不同的控制面板
+    path: "/dashboard/:path",
     name: "DashBoard",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
