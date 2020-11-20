@@ -56,7 +56,7 @@
       <el-dropdown>
         <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
         <el-button
-          style="width: 50px;height: 50px;"
+          style="width: 50px;height: 50px; font-size: 20px"
           type="primary"
           icon="el-icon-edit"
           circle

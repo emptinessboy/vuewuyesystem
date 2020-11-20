@@ -223,7 +223,7 @@ export default {
               };
             });
           console.log("submit!");
-          console.log(postform);
+          // console.log(postform);
         }
       });
     }

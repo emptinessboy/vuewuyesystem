@@ -12,21 +12,29 @@
     </el-alert>
     <!--新增服务表单-->
     <el-form
+      label-position="left"
+      ref="newService"
+      :rules="rules"
       :inline="true"
-      :model="formInline"
+      :model="newService"
       class="demo-form-inline"
       v-show="showeidt"
     >
       <el-form-item label="服务名称">
-        <el-input v-model="formInline.id" placeholder="服务ID" :disabled="true"></el-input>
+        <el-input
+          v-model="newService.id"
+          placeholder="服务ID"
+          :disabled="true"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="服务名称" required>
-        <el-input v-model="formInline.name" placeholder="服务名称"></el-input>
+      <el-form-item label="服务名称" prop="name" required>
+        <el-input v-model="newService.name" placeholder="服务名称"></el-input>
       </el-form-item>
       <!--使用allow-create属性即可通过在输入框中输入文字来创建新的条目。注意此时filterable必须为真。本例还使用了default-first-option属性，在该属性打开的情况下，按下回车就可以选中当前选项列表中的第一个选项，无需使用鼠标或键盘方向键进行定位。-->
-      <el-form-item label="服务价格" required>
+      <el-form-item label="服务价格" prop="price" required>
         <el-select
-          v-model="formInline.price"
+          type="number"
+          v-model="newService.price"
           placeholder="输入或选择价格"
           filterable
           allow-create
@@ -34,21 +42,23 @@
         >
           <el-option label="50 元" value="50"></el-option>
           <el-option label="100 元" value="100"></el-option>
-          <el-option label="150 元" value="100"></el-option>
-          <el-option label="200 元" value="100"></el-option>
+          <el-option label="150 元" value="150"></el-option>
+          <el-option label="200 元" value="200"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="服务简介" required>
+      <el-form-item label="服务简介" prop="desc" required>
         <el-input
           type="textarea"
           :rows="2"
           placeholder="请输入内容"
-          v-model="formInline.desc"
+          v-model="newService.desc"
         >
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">提交</el-button>
+        <el-button type="primary" @click="onSubmit('newService')"
+          >提交</el-button
+        >
       </el-form-item>
     </el-form>
     <!--新增服务表单-->
@@ -63,7 +73,12 @@
       >
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span><el-tag effect="dark" type="success" style="margin-right: 10px;">ID：001</el-tag> 卡片名称</span>
+            <span
+              ><el-tag effect="dark" type="success" style="margin-right: 10px;"
+                >ID：001</el-tag
+              >
+              卡片名称</span
+            >
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
@@ -85,21 +100,101 @@
 </template>
 
 <script>
+import axios from "axios";
+import qs from "qs";
+
 export default {
   name: "ServiceMenu",
   props: ["showdelete", "showeidt"],
   data() {
     return {
-      formInline: {
+      newService: {
+        id: "",
         name: "",
         price: "",
         desc: ""
+      },
+      rules: {
+        name: [
+          { required: true, message: "请输入服务名称", trigger: "blur" },
+          { min: 1, max: 10, message: "不超过 10 个字符", trigger: "blur" }
+        ],
+        price: [
+          { required: true, message: "价格不能为空" },
+          { type: "number", message: "价格必须为数字值" }
+        ],
+        desc: [
+          {
+            required: true,
+            min: 1,
+            max: 50,
+            message: "请填写服务简介，小于 50 个字符",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    onSubmit(formName) {
+      //这里是表单校验规则
+      this.$refs[formName].validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+        } else {
+          //下面是post请求部分
+          let that = this;
+          //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+          let postform = {
+            method: "add",
+            id: this.newService.id,
+            name: this.newService.name,
+            price: this.newService.price,
+            desc: this.newService.desc,
+            time: 0
+          };
+          axios
+            .post(
+              // eslint-disable-next-line no-undef
+              hxf_conf.BaseUrl + "/api/servivcemanage",
+              qs.stringify(postform)
+            )
+            .catch(function(error) {
+              console.log("添加失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，添加失败,错误原因：" + error,
+                type: "warning"
+              });
+            })
+            .then(response => {
+              if (response.status != 200) {
+                this.$message({
+                  showClose: true,
+                  message: "警告哦，添加失败，请检查服务端和数据库",
+                  type: "warning"
+                });
+                console.log("保存失败：", response.status);
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，添加服务成功",
+                  type: "success"
+                });
+                console.log("保存成功：", response.status);
+              }
+            })
+            .finally(function() {
+              // that.getNewUID();// that.getNewUID();// that.getNewUID();// that.getNewUID();
+              that.newService = {
+                id: "",
+                name: "",
+                price: "",
+                desc: ""
+              };
+            });
+        }
+      });
     }
   }
 };
