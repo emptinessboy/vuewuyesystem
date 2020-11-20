@@ -11,7 +11,7 @@
     z-index:11;
     width: 100%"
   >
-    <el-menu-item index="1" @click="changeshowbar" style="width: 120px;"
+    <el-menu-item index="1" @click="changeshowbar" style="width: 125px;"
       >HXF物业系统</el-menu-item
     >
 

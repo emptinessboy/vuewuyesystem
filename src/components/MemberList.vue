@@ -151,7 +151,8 @@ export default {
         cno: cno
       };
       axios
-        .post("http://127.0.0.1:8080/api/listmembers", qs.stringify(deleteno))
+        // eslint-disable-next-line no-undef
+        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
         .catch(function(error) {
           console.log("删除失败：", error);
           that.$message({
@@ -193,7 +194,8 @@ export default {
         row: row
       };
       axios
-        .post("http://127.0.0.1:8080/api/listmembers", qs.stringify(eidtno))
+        // eslint-disable-next-line no-undef
+        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(eidtno))
         .catch(function(error) {
           console.log("保存失败：", error);
           that.$message({
@@ -233,7 +235,8 @@ export default {
     // 通过 let that = this
     // 将this保存在that中，再在函数中使用that均可
     axios
-      .get("http://127.0.0.1:8080/api/listmembers")
+      // eslint-disable-next-line no-undef
+      .get(hxf_conf.BaseUrl + "/api/listmembers")
       .catch(function(error) {
         console.log("获取数据：", error);
         that.$message({

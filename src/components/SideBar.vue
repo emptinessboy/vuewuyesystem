@@ -1,6 +1,6 @@
 <template>
   <transition name="el-fade-in-linear">
-    <el-aside style="width: 120px;" v-show="showbar">
+    <el-aside style="width: 125px;" v-show="showbar">
       <el-menu
         class="flex-container"
         router
@@ -9,7 +9,7 @@
         text-color="#fff"
         active-text-color="#ffd04b"
         collapse
-        style="width: 120px; position: fixed; z-index:9; height: 100%; padding-top: 5px;"
+        style="width: 125px; position: fixed; z-index:9; height: 100%; padding-top: 5px;"
       >
         <el-menu-item index="memberlist">
           <i class="el-icon-s-data"></i>

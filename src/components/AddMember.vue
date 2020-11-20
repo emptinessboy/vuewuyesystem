@@ -142,7 +142,8 @@ export default {
     getNewUID() {
       let that = this;
       axios
-        .get("http://127.0.0.1:8080/api/addmembers")
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "api/addmembers")
         .catch(function(error) {
           console.log("获取新用户ID失败：", error);
           that.$message({
@@ -178,7 +179,8 @@ export default {
           };
           axios
             .post(
-              "http://127.0.0.1:8080/api/addmembers",
+              // eslint-disable-next-line no-undef
+              hxf_conf.BaseUrl + "/api/addmembers",
               qs.stringify(postform)
             )
             .catch(function(error) {

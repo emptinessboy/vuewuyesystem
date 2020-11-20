@@ -23,6 +23,16 @@ export default {
 body {
   display: block;
   margin: 0px !important;
+  /*解决移动端点击div区域或者span出现蓝色边框*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+/*解决苹果的蓝色边框问题*/
+a:focus,
+input:focus,
+p:focus,
+div:focus {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-modify: read-write-plaintext-only;
 }
 /*重写nav导航下划线颜色*/
 .el-menu.el-menu--horizontal {
