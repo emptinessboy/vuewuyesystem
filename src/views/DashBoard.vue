@@ -13,7 +13,10 @@
             style="text-align: left; font-size: 12px; position: fixed; z-index:8; width: 100%;"
           >
             <el-button
-              v-if="this.$route.path === '/dashboard/memberlist'"
+              v-if="
+                this.$route.path === '/dashboard/memberlist' ||
+                  this.$route.path === '/dashboard/servicemenu'
+              "
               type="info"
               plain
               style="float: right; margin-top: 10px;"
@@ -43,7 +46,13 @@
     </el-container>
 
     <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
-    <div class="eidtbutton" v-if="this.$route.path === '/dashboard/memberlist'">
+    <div
+      class="eidtbutton"
+      v-if="
+        this.$route.path === '/dashboard/memberlist' ||
+          this.$route.path === '/dashboard/servicemenu'
+      "
+    >
       <el-dropdown>
         <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
         <el-button
@@ -53,8 +62,9 @@
           circle
         ></el-button>
         <el-dropdown-menu slot="dropdown">
-          <span @click="changeshoweidt"
-            ><el-dropdown-item>修改</el-dropdown-item></span
+          <span
+            @click="changeshoweidt"
+            ><el-dropdown-item>编辑</el-dropdown-item></span
           >
           <span @click="changeshowdelete"
             ><el-dropdown-item>删除</el-dropdown-item></span

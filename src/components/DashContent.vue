@@ -10,16 +10,22 @@
       :showeidt="this.showeidt"
     ></MemberList>
     <AddMember v-if="this.$route.path === '/dashboard/addmember'"></AddMember>
+    <ServiceMenu
+      v-if="this.$route.path === '/dashboard/servicemenu'"
+      :showdelete="showdelete"
+      :showeidt="showeidt"
+    ></ServiceMenu>
   </el-main>
 </template>
 
 <script>
 import MemberList from "@/components/MemberList";
 import AddMember from "@/components/AddMember";
+import ServiceMenu from "@/components/ServiceMenu";
 export default {
   name: "DashContent",
   props: ["screenHeight", "showdelete", "showeidt"],
-  components: { AddMember, MemberList },
+  components: { ServiceMenu, AddMember, MemberList },
   created() {}
 };
 </script>

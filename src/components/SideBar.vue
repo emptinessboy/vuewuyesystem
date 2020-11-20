@@ -32,17 +32,17 @@
           >
           <el-menu-item-group>
             <template slot="title">service</template>
-            <el-menu-item index="3-1">服务项目</el-menu-item>
+            <el-menu-item index="servicemenu">服务项目</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="分组2">
             <template slot="title">payment</template>
-            <el-menu-item index="3-3">用户扣缴</el-menu-item>
+            <el-menu-item index="payservice">用户扣缴</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
 
         <el-submenu index="2" style="">
           <template slot="title"
-            ><i class="el-icon-s-open"></i> 物业费用</template
+            ><i class="el-icon-s-finance"></i> 物业费用</template
           >
           <el-menu-item-group>
             <template slot="title">finance</template>
