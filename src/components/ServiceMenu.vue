@@ -17,6 +17,9 @@
       class="demo-form-inline"
       v-show="showeidt"
     >
+      <el-form-item label="服务名称">
+        <el-input v-model="formInline.id" placeholder="服务ID" :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="服务名称" required>
         <el-input v-model="formInline.name" placeholder="服务名称"></el-input>
       </el-form-item>
@@ -60,7 +63,7 @@
       >
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>卡片名称</span>
+            <span><el-tag effect="dark" type="success" style="margin-right: 10px;">ID：001</el-tag> 卡片名称</span>
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
