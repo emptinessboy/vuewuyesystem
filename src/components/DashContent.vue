@@ -5,12 +5,11 @@
     <!--实现动态路由-->
     <MemberList
       v-if="this.$route.path === '/dashboard/memberlist'"
+      :screenHeight="this.screenHeight"
       :showdelete="this.showdelete"
       :showeidt="this.showeidt"
     ></MemberList>
-    <AddMember
-        v-if="this.$route.path === '/dashboard/addmember'"
-    ></AddMember>
+    <AddMember v-if="this.$route.path === '/dashboard/addmember'"></AddMember>
   </el-main>
 </template>
 
@@ -19,8 +18,8 @@ import MemberList from "@/components/MemberList";
 import AddMember from "@/components/AddMember";
 export default {
   name: "DashContent",
-  props: ["showdelete", "showeidt"],
-  components: {AddMember, MemberList },
+  props: ["screenHeight", "showdelete", "showeidt"],
+  components: { AddMember, MemberList },
   created() {}
 };
 </script>

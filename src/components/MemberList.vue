@@ -3,6 +3,7 @@
   <div v-if="tableData != null">
     <!--使用过滤器搜索-->
     <el-table
+      :max-height="this.screenHeight - 165"
       :data="
         tableData.filter(
           data =>
@@ -25,7 +26,7 @@
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="csex" label="性别" width="120">
+      <el-table-column prop="csex" label="性别" width="90">
         <template slot-scope="scope">
           <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
 
@@ -45,7 +46,7 @@
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="caddress" label="用户住址" width="120">
+      <el-table-column prop="caddress" label="用户住址" width="200">
         <template slot-scope="scope">
           <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
           <el-input
@@ -76,7 +77,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="cmoney" label="剩余物业费" width="100"> </el-table-column>
+      <el-table-column prop="cmoney" label="剩余物业费" width="100">
+      </el-table-column>
 
       <el-table-column
         fixed="right"
@@ -139,7 +141,7 @@ import axios from "axios";
 import qs from "qs";
 export default {
   name: "MemberList",
-  props: ["showdelete", "showeidt"],
+  props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
     deleteRow(cno, index, rows) {
       let that = this;
@@ -224,6 +226,8 @@ export default {
     }
   },
   created() {
+    //获取屏幕高度
+    // this.getScreenHeight();
     let that = this;
     // 在Vue中this始终指向Vue，但axios中this为undefined
     // 通过 let that = this

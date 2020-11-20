@@ -34,6 +34,7 @@
             </div>
           </el-header>
           <dash-content
+            :screenHeight="screenHeight"
             :showdelete="showdelete"
             :showeidt="showeidt"
           ></dash-content>
@@ -51,9 +52,7 @@
           icon="el-icon-edit"
           circle
         ></el-button>
-        <el-dropdown-menu
-          slot="dropdown"
-        >
+        <el-dropdown-menu slot="dropdown">
           <span @click="changeshoweidt"
             ><el-dropdown-item>修改</el-dropdown-item></span
           >
@@ -111,12 +110,14 @@ export default {
       showeidt: false,
       munuinfo: "el-icon-s-fold",
       munuinfotext: "收拢",
-      screenWidth: ""
+      screenWidth: "",
+      screenHeight: ""
     };
   },
   computed: {},
   methods: {
     screenfit() {
+      this.screenHeight = document.documentElement.clientHeight;
       this.screenWidth = document.body.clientWidth;
       if (this.screenWidth <= 768) {
         //传递事件将 isshowbar 变为 false，使页面响应，左侧边栏隐藏
@@ -161,6 +162,7 @@ export default {
     //监控屏幕尺寸实现响应式菜单栏
     window.onresize = () => {
       this.screenfit();
+      // console.log("用户屏幕高度" + this.screenHeight);
     };
   },
   watch: {
