@@ -67,11 +67,15 @@
 </template>
 
 <script>
+import axios from "axios";
+import md5 from "js-md5";
+import qs from "qs";
 export default {
   name: "AddMember",
   data() {
     return {
       max: 500,
+      newuserid: "",
       form: {
         id: "",
         name: "",
@@ -80,15 +84,77 @@ export default {
         date2: "",
         address: "",
         money: 0,
-        pass: ""
+        pass: "",
       }
     };
   },
   methods: {
     onSubmit() {
+
+
+      let that = this;
+      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+      let postform = {
+        method: "add",
+        id: this.form.id,
+        name: this.form.name,
+        sex: this.form.sex,
+        date: this.form.date2,
+        address: this.form.address,
+        money: 0,
+        pass: md5(this.form.pass),
+      };
+
+      axios
+          .post("http://127.0.0.1:8080/api/addmembers", qs.stringify(postform))
+          .catch(function(error) {
+            console.log("添加失败：", error);
+            that.$message({
+              showClose: true,
+              message: "警告哦，添加失败,错误原因：" + error,
+              type: "warning"
+            });
+          })
+          .then(response => {
+            if (response.status != 200) {
+              this.$message({
+                showClose: true,
+                message: "警告哦，保存失败，请检查服务端和数据库",
+                type: "warning"
+              });
+              console.log("保存失败：", response.status);
+            } else {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，保存数据成功",
+                type: "success"
+              });
+              console.log("保存成功：", response.status);
+            }
+          })
+          .finally(function() {});
+
       console.log("submit!");
-      console.log(this.form);
+
+      console.log(postform);
     }
+  },
+  created() {
+    let that = this;
+    axios
+      .get("http://127.0.0.1:8080/api/addmembers")
+      .catch(function(error) {
+        console.log("获取新用户ID失败：", error);
+        that.$message({
+          showClose: true,
+          message: "连接服务器端失败，请检查网络： " + error,
+          type: "warning"
+        });
+      })
+      .then(response => {
+        that.form.id = response.data[0].newid;
+        console.log("获取新用户ID：" + that.form.id);
+      });
   }
 };
 </script>
