@@ -40,6 +40,7 @@
           allow-create
           default-first-option
         >
+          <el-option label="免费" value="0"></el-option>
           <el-option label="50 元" value="50"></el-option>
           <el-option label="100 元" value="100"></el-option>
           <el-option label="150 元" value="150"></el-option>
@@ -148,7 +149,8 @@ export default {
             method: "add",
             id: this.newService.id,
             name: this.newService.name,
-            price: this.newService.price,
+            //保留两位小数
+            price: parseFloat(this.newService.price).toFixed(2),
             desc: this.newService.desc,
             time: 0
           };
@@ -188,7 +190,7 @@ export default {
               that.newService = {
                 id: "",
                 name: "",
-                price: "",
+                price: "0",
                 desc: ""
               };
             });
