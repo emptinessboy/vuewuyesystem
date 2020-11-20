@@ -27,11 +27,11 @@
           :disabled="true"
         ></el-input>
       </el-form-item>
-      <el-form-item label="服务名称" prop="name" required>
+      <el-form-item label="服务名称" prop="name">
         <el-input v-model="newService.name" placeholder="服务名称"></el-input>
       </el-form-item>
       <!--使用allow-create属性即可通过在输入框中输入文字来创建新的条目。注意此时filterable必须为真。本例还使用了default-first-option属性，在该属性打开的情况下，按下回车就可以选中当前选项列表中的第一个选项，无需使用鼠标或键盘方向键进行定位。-->
-      <el-form-item label="服务价格" prop="price" required>
+      <el-form-item label="服务价格" prop="price">
         <el-select
           type="number"
           v-model="newService.price"
@@ -46,7 +46,7 @@
           <el-option label="200 元" value="200"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="服务简介" prop="desc" required>
+      <el-form-item label="服务简介" prop="desc">
         <el-input
           type="textarea"
           :rows="2"
@@ -121,7 +121,6 @@ export default {
         ],
         price: [
           { required: true, message: "价格不能为空" },
-          { type: "number", message: "价格必须为数字值" }
         ],
         desc: [
           {
@@ -156,7 +155,7 @@ export default {
           axios
             .post(
               // eslint-disable-next-line no-undef
-              hxf_conf.BaseUrl + "/api/servivcemanage",
+              hxf_conf.BaseUrl + "/api/servicemanage",
               qs.stringify(postform)
             )
             .catch(function(error) {
