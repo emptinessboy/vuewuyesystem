@@ -26,22 +26,43 @@
           添加住户
         </el-menu-item>
 
+        <el-submenu index="1" style="">
+          <template slot="title"
+            ><i class="el-icon-s-open"></i> 物业服务</template
+          >
+          <el-menu-item-group>
+            <template slot="title">service</template>
+            <el-menu-item index="3-1">服务项目</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="分组2">
+            <template slot="title">payment</template>
+            <el-menu-item index="3-3">用户扣缴</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+
+        <el-submenu index="2" style="">
+          <template slot="title"
+            ><i class="el-icon-s-open"></i> 物业费用</template
+          >
+          <el-menu-item-group>
+            <template slot="title">finance</template>
+            <el-menu-item index="4-1">费用明细</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="分组2">
+            <template slot="title">payment</template>
+            <el-menu-item index="4-3">用户充值</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+
         <el-submenu index="3" style="margin-top: auto;margin-bottom: 80px;">
           <template slot="title"
             ><i class="el-icon-setting"></i> 员工管理</template
           >
           <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="3-1">选项1</el-menu-item>
-            <el-menu-item index="3-2">选项2</el-menu-item>
+            <template slot="title">workers</template>
+            <el-menu-item index="3-1">员工列表</el-menu-item>
+            <el-menu-item index="3-2">绩效考核</el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="3-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="3-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="3-4-1">选项4-1</el-menu-item>
-          </el-submenu>
         </el-submenu>
       </el-menu>
     </el-aside>

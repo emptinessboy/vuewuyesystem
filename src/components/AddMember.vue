@@ -143,7 +143,7 @@ export default {
       let that = this;
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "api/addmembers")
+        .get(hxf_conf.BaseUrl + "/api/addmembers")
         .catch(function(error) {
           console.log("获取新用户ID失败：", error);
           that.$message({
