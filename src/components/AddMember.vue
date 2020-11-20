@@ -66,8 +66,9 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
-      <el-button>取消</el-button>
+      <el-button style="float: right" type="primary" @click="onSubmit('form')"
+        >新增用户</el-button
+      >
     </el-form-item>
   </el-form>
 </template>
@@ -99,7 +100,7 @@ export default {
           { required: true, message: "请输入用户姓名", trigger: "blur" },
           { min: 2, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
-        sex: [{ required: true, message: "请选择活动区域", trigger: "change" }],
+        sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         date1: [
           {
             type: "date",
@@ -117,7 +118,13 @@ export default {
           }
         ],
         address: [
-          { required: true, message: "请填写用户住址", trigger: "blur" }
+          {
+            required: true,
+            min: 1,
+            max: 100,
+            message: "请填写用户住址，小于 100 个字符",
+            trigger: "blur"
+          }
         ],
         pass: [
           {
