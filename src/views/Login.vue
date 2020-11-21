@@ -1,5 +1,7 @@
 <template>
   <el-row type="flex" justify="space-around" class="row-bg login">
+    <!--这里使用了elementUI的响应式设计-->
+    <!--走马灯部分-->
     <el-col :xs="0" :sm="8" :md="12" :lg="15"
       ><div
         class="grid-content bg-purple"
@@ -29,14 +31,14 @@
         </div>
       </div>
     </el-col>
-
+    <!--登录表单部分-->
     <el-col
       :xs="24"
       :sm="16"
       :md="12"
       :lg="9"
       id="login"
-      style="padding: 45px 35px 10px 35px;"
+      style="padding: 4rem 2.5rem 5rem 2.5rem;"
     >
       <el-form
         style="margin: auto;align-items:center;height: 100%"
@@ -46,7 +48,6 @@
         :rules="rules"
         ref="loginForm"
         label-width="100px"
-        class="demo-loginForm"
       >
         <h1>用户登录</h1>
         <el-form-item label="用户ID" prop="name">
@@ -63,7 +64,7 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="是否为员工？">
+        <el-form-item label="是否为员工？" prop="staff">
           <el-switch v-model="loginForm.isStaff"> </el-switch>
         </el-form-item>
         <el-form-item>
@@ -98,7 +99,8 @@ export default {
             min: 1,
             max: 16,
             message: "密码长度为 6-20 个字符",
-            trigger: "blur"
+            trigger: "blur",
+            required: true,
           }
         ]
       }
@@ -117,6 +119,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.loginForm.uid = ""
     }
   }
 };
