@@ -20,7 +20,7 @@
       class="demo-form-inline"
       v-show="showeidt"
     >
-      <el-form-item label="服务名称">
+      <el-form-item label="服务 SID">
         <el-input
           v-model="newService.id"
           placeholder="服务ID"
@@ -120,9 +120,7 @@ export default {
           { required: true, message: "请输入服务名称", trigger: "blur" },
           { min: 1, max: 10, message: "不超过 10 个字符", trigger: "blur" }
         ],
-        price: [
-          { required: true, message: "价格不能为空" },
-        ],
+        price: [{ required: true, message: "价格不能为空" }],
         desc: [
           {
             required: true,
@@ -135,7 +133,28 @@ export default {
       }
     };
   },
+  created() {
+    this.getNewUID();
+  },
   methods: {
+    getNewUID() {
+      let that = this;
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/servicemanage")
+        .catch(function(error) {
+          console.log("获取新服务ID失败：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务器端失败，请检查网络： " + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          that.newService.id = response.data[0].newid;
+          console.log("获取新服务ID：" + that.newService.id);
+        });
+    },
     onSubmit(formName) {
       //这里是表单校验规则
       this.$refs[formName].validate(valid => {
@@ -186,7 +205,7 @@ export default {
               }
             })
             .finally(function() {
-              // that.getNewUID();// that.getNewUID();// that.getNewUID();// that.getNewUID();
+              that.getNewUID();
               that.newService = {
                 id: "",
                 name: "",
