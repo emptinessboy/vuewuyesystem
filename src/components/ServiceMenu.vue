@@ -254,7 +254,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteid))
+        .post(hxf_conf.BaseUrl + "/api/servicemanage", qs.stringify(deleteid))
         .catch(function(error) {
           console.log("删除失败：", error);
           that.$message({
