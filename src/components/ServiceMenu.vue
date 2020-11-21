@@ -68,17 +68,17 @@
       <el-col
         :sm="24"
         :md="11"
-        v-for="(o, index) in 20"
-        :key="o"
+        v-for="(item,index) in serviceList"
+        :key="index"
         style="margin-left: -10px;"
       >
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span
               ><el-tag effect="dark" type="success" style="margin-right: 10px;"
-                >ID：001</el-tag
+                >ID：{{item.sid}}</el-tag
               >
-              卡片名称</span
+              {{item.sname}}</span
             >
             <el-button
               style="float: right; padding: 3px 0"
@@ -88,12 +88,12 @@
             >
           </div>
           <div class="text item">
-            服务介绍：123
+            服务介绍：{{item.sdesc}}
           </div>
           <div class="text item">
-            服务价格：<el-tag type="warning">标签</el-tag>
+            服务价格：<el-tag type="warning">{{item.sprice}} 元</el-tag>
           </div>
-          <div class="text item">累计服务次数：<el-tag>标签</el-tag></div>
+          <div class="text item">累计服务次数：<el-tag>{{item.stime}} 次</el-tag></div>
         </el-card>
       </el-col>
     </el-row>
@@ -109,6 +109,7 @@ export default {
   props: ["showdelete", "showeidt"],
   data() {
     return {
+      serviceList: [],
       newService: {
         id: "",
         name: "",
@@ -134,14 +135,40 @@ export default {
     };
   },
   created() {
+    this.getSeriveList();
     this.getNewUID();
   },
   methods: {
-    getNewUID() {
+    getSeriveList() {
       let that = this;
+      let getform = {
+        want: "slist"
+      };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/servicemanage")
+        .get(hxf_conf.BaseUrl + "/api/servicemanage?" + qs.stringify(getform))
+        .catch(function(error) {
+          console.log("获取服务列表失败：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务列表失败，请检查网络： " + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          that.serviceList = response.data;
+          console.log("获取新服务列表：");
+          console.log(that.serviceList)
+        });
+    },
+    getNewUID() {
+      let that = this;
+      let getform = {
+        want: "sid"
+      };
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/servicemanage?" + qs.stringify(getform))
         .catch(function(error) {
           console.log("获取新服务ID失败：", error);
           that.$message({
@@ -212,6 +239,7 @@ export default {
                 price: "0",
                 desc: ""
               };
+              that.getSeriveList();
             });
         }
       });
