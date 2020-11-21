@@ -68,7 +68,7 @@
       <el-col
         :sm="24"
         :md="11"
-        v-for="(item,index) in serviceList"
+        v-for="(item, index) in serviceList"
         :key="index"
         style="margin-left: -10px;"
       >
@@ -76,24 +76,25 @@
           <div slot="header" class="clearfix">
             <span
               ><el-tag effect="dark" type="success" style="margin-right: 10px;"
-                >ID：{{item.sid}}</el-tag
+                >ID：{{ item.sid }}</el-tag
               >
-              {{item.sname}}</span
+              {{ item.sname }}</span
             >
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
               v-show="showdelete"
+              @click="deleteService(item.sid)"
               >删除服务</el-button
             >
           </div>
+          <div class="text item">服务介绍：{{ item.sdesc }}</div>
           <div class="text item">
-            服务介绍：{{item.sdesc}}
+            服务价格：<el-tag type="warning">{{ item.sprice }} 元</el-tag>
           </div>
           <div class="text item">
-            服务价格：<el-tag type="warning">{{item.sprice}} 元</el-tag>
+            累计服务次数：<el-tag>{{ item.stime }} 次</el-tag>
           </div>
-          <div class="text item">累计服务次数：<el-tag>{{item.stime}} 次</el-tag></div>
         </el-card>
       </el-col>
     </el-row>
@@ -157,8 +158,8 @@ export default {
         })
         .then(response => {
           that.serviceList = response.data;
-          console.log("获取新服务列表：");
-          console.log(that.serviceList)
+          console.log("获取新服务列表成功");
+          // console.log(that.serviceList);
         });
     },
     getNewUID() {
@@ -243,6 +244,46 @@ export default {
             });
         }
       });
+    },
+    deleteService(sid) {
+      let that = this;
+      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+      let deleteid = {
+        method: "delete",
+        sid: sid
+      };
+      axios
+        // eslint-disable-next-line no-undef
+        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteid))
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          if (response.status != 200) {
+            this.$message({
+              showClose: true,
+              message: "警告哦，删除失败，请检查服务端和数据库",
+              type: "warning"
+            });
+            console.log("删除失败：", sid, response.status);
+          } else {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，删除记录成功",
+              type: "success"
+            });
+            console.log("删除成功：", sid, response.status);
+          }
+        })
+        .finally(function() {
+          that.getSeriveList();
+          that.getNewUID();
+        });
     }
   }
 };
