@@ -194,7 +194,7 @@ export default {
           //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
           let postform = {
             method: "add",
-            id: this.newService.id,
+            sid: this.newService.id,
             name: this.newService.name,
             //保留两位小数
             price: parseFloat(this.newService.price).toFixed(2),
