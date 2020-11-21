@@ -1,90 +1,106 @@
 <template>
-  <div id="login">
-    <h1>用户登录</h1>
-    <el-form
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
+  <el-row type="flex" justify="space-around" class="row-bg login">
+    <el-col :xs="0" :sm="8" :md="12" :lg="15"
+      ><div
+        class="grid-content bg-purple"
+        style="height:100%; width:100%; background-color: #333333"
+      >
+        <div class="block">
+          <el-carousel height="calc(100vh - 60px)">
+            <el-carousel-item>
+              <img
+                src="/static/imgs/zwu_1.jpg"
+                style="min-width: 100%; min-height: 100%;"
+              />
+            </el-carousel-item>
+            <el-carousel-item>
+              <img
+                src="/static/imgs/zwu_2.jpg"
+                style="min-width: 100%; min-height: 100%;"
+              />
+            </el-carousel-item>
+            <el-carousel-item>
+              <img
+                src="/static/imgs/zwu_3.jpg"
+                style="min-width: 100%; min-height: 100%;"
+              />
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>
+    </el-col>
+
+    <el-col
+      :xs="24"
+      :sm="16"
+      :md="12"
+      :lg="9"
+      id="login"
+      style="padding: 45px 35px 10px 35px;"
     >
-      <el-form-item label="密码" prop="pass">
-        <el-input
-          type="password"
-          v-model="ruleForm.pass"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input
-          type="password"
-          v-model="ruleForm.checkPass"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="年龄" prop="age">
-        <el-input v-model.number="ruleForm.age"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')"
-          >提交</el-button
-        >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+      <el-form
+        style="margin: auto;align-items:center;height: 100%"
+        labelPosition="top"
+        :model="loginForm"
+        status-icon
+        :rules="rules"
+        ref="loginForm"
+        label-width="100px"
+        class="demo-loginForm"
+      >
+        <h1>用户登录</h1>
+        <el-form-item label="用户ID" prop="name">
+          <el-input
+            type="text"
+            v-model="loginForm.uid"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="pass">
+          <el-input
+            type="password"
+            v-model="loginForm.pass"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="是否为员工？">
+          <el-switch v-model="loginForm.isStaff"> </el-switch>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('loginForm')"
+            >提交</el-button
+          >
+          <el-button @click="resetForm('loginForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
 export default {
   name: "Login",
   data() {
-    let checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("年龄不能为空"));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          if (value < 18) {
-            callback(new Error("必须年满18岁"));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
-    };
-    let validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.ruleForm.checkPass !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
-        }
-        callback();
-      }
-    };
-    let validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
-      ruleForm: {
+      loginForm: {
+        uid: "",
         pass: "",
-        checkPass: "",
-        age: ""
+        age: "",
+        isStaff: false
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        age: [{ validator: checkAge, trigger: "blur" }]
+        name: [
+          { required: true, message: "请输入用户ID", trigger: "blur" },
+          { min: 1, max: 15, message: "超出长度限制", trigger: "blur" }
+        ],
+        pass: [
+          {
+            min: 1,
+            max: 16,
+            message: "密码长度为 6-20 个字符",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
@@ -106,4 +122,30 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.login {
+  /*修复饿了么ui高度100%导致的溢出*/
+  overflow-y: hidden;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  /*高度适应屏幕*/
+  height: calc(100vh - 60px);
+  width: 100%;
+}
+
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+</style>
