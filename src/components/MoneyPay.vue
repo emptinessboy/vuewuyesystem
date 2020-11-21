@@ -9,7 +9,7 @@
     :rules="rules"
   >
     <el-form-item label="用户ID" prop="uid">
-      <el-input v-model="form.uid"></el-input>
+      <el-input v-model="form.uid" type="number" class="elinput"></el-input>
     </el-form-item>
 
     <el-form-item label="服务名称" prop="service" required>
@@ -69,6 +69,7 @@
 
     <el-form-item label="服务员工" prop="staff">
       <el-input
+        class="elinput"
         v-model="form.staff"
         placeholder="请输入员工工号"
         type="number"
@@ -140,6 +141,9 @@ export default {
     };
   },
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     getSeriveList() {
       let that = this;
       let getform = {
@@ -182,7 +186,7 @@ export default {
           axios
             .post(
               // eslint-disable-next-line no-undef
-              hxf_conf.BaseUrl + "/api/addmembers",
+              hxf_conf.BaseUrl + "/api/moneyapi",
               qs.stringify(postform)
             )
             .catch(function(error) {
@@ -194,11 +198,32 @@ export default {
               });
             })
             .then(response => {
-              if (response.status != 200) {
+              if (response.status == 205) {
+                this.$message({
+                  showClose: true,
+                  message: "错误：未找到用户 ID",
+                  type: "warning"
+                });
+                console.log("保存失败：", response.status);
+              } else if (response.status == 206) {
+                this.$message({
+                  showClose: true,
+                  message: "错误：用户余额不足，需要充值",
+                  type: "warning"
+                });
+                console.log("保存失败：", response.status);
+              } else if (response.status == 207) {
+                this.$message({
+                  showClose: true,
+                  message: "内部错误：用户扣款失败",
+                  type: "error"
+                });
+                console.log("保存失败：", response.status);
+              } else if (response.status != 200) {
                 this.$message({
                   showClose: true,
                   message: "警告哦，扣缴失败，请检查服务端和数据库",
-                  type: "warning"
+                  type: "error"
                 });
                 console.log("保存失败：", response.status);
               } else {
@@ -212,7 +237,6 @@ export default {
             })
             .finally(function() {
               //清空表单
-
               that.form = {
                 uid: "",
                 service: "",
@@ -221,6 +245,7 @@ export default {
                 times: 0,
                 staff: ""
               };
+              that.resetForm("form");
             });
           console.log("submit!");
           // console.log(postform);
@@ -235,3 +260,10 @@ export default {
 </script>
 
 <style scoped></style>
+<style>
+.elinput input {
+  /*height: 40px!important;*/
+  /*padding: 4px 0px!important;*/
+  line-height: 1 !important;
+}
+</style>
