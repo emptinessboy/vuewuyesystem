@@ -46,7 +46,7 @@
           >
           <el-menu-item-group>
             <template slot="title">finance</template>
-            <el-menu-item index="4-1">费用明细</el-menu-item>
+            <el-menu-item index="moneylist">费用明细</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="分组2">
             <template slot="title">payment</template>

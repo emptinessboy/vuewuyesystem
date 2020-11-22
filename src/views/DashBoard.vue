@@ -15,7 +15,8 @@
             <el-button
               v-if="
                 this.$route.path === '/dashboard/memberlist' ||
-                  this.$route.path === '/dashboard/servicemenu'
+                  this.$route.path === '/dashboard/servicemenu' ||
+                  this.$route.path === '/dashboard/moneylist'
               "
               type="info"
               plain
@@ -50,7 +51,8 @@
       class="eidtbutton"
       v-if="
         this.$route.path === '/dashboard/memberlist' ||
-          this.$route.path === '/dashboard/servicemenu'
+          this.$route.path === '/dashboard/servicemenu' ||
+          this.$route.path === '/dashboard/moneylist'
       "
     >
       <el-dropdown>
@@ -63,6 +65,7 @@
         ></el-button>
         <el-dropdown-menu slot="dropdown">
           <span
+            v-if="this.$route.path != '/dashboard/moneylist'"
             @click="changeshoweidt"
             ><el-dropdown-item>编辑</el-dropdown-item></span
           >
