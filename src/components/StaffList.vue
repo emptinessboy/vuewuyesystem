@@ -68,12 +68,12 @@
       >
         <el-table-column prop="eid" label="员工ID" width="110">
         </el-table-column>
-        <el-table-column prop="ename" label="员工姓名" width="120">
+        <el-table-column prop="ename" label="员工姓名" width="130">
         </el-table-column>
         <el-table-column prop="esex" label="性别" width="90"> </el-table-column>
-        <el-table-column prop="isadmin" label="是否管理员" width="100">
+        <el-table-column prop="isadmin" label="是否管理员" width="160">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="130">
+        <el-table-column label="操作" width="180">
           <template slot="header">
             <input
               type="text"

@@ -9,7 +9,23 @@
     :rules="rules"
   >
     <el-form-item label="用户ID" prop="uid">
-      <el-input v-model="form.uid" type="number" class="elinput"></el-input>
+
+      <el-select
+          filterable
+          v-model="form.uid"
+          placeholder="请选择用户"
+          style="width: 100%"
+      >
+        <el-option
+            v-for="item in cnoList"
+            :key="item.cno"
+            :label="'ID-' + item.cno + '  ' + item.cname"
+            :value="item.cno"
+        >
+        </el-option>
+      </el-select>
+
+<!--      <el-input v-model="form.uid" type="number" class="elinput"></el-input>-->
     </el-form-item>
 
     <el-form-item label="服务名称" prop="service" required>
@@ -93,6 +109,7 @@ export default {
   name: "MoneyPay",
   data() {
     return {
+      cnoList:[],
       serviceList: [],
       max: 5,
       min: 1,
@@ -106,10 +123,7 @@ export default {
       },
       //表单校验规则
       rules: {
-        uid: [
-          { required: true, message: "请输入用户ID", trigger: "blur" },
-          { min: 1, max: 15, message: "长度在 1 到 15 个字符", trigger: "blur" }
-        ],
+        uid: [{ required: true, message: "请选择用户 ID", trigger: "change" }],
         service: [
           { required: true, message: "请选择服务名称", trigger: "change" }
         ],
@@ -144,6 +158,25 @@ export default {
   methods: {
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    getCnoList() {
+      let that = this;
+      axios
+          // eslint-disable-next-line no-undef
+          .get(hxf_conf.BaseUrl + "/api/listmembers")
+          .catch(function(error) {
+            console.log("获取用户列表失败：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务器失败，请检查网络： " + error,
+              type: "warning"
+            });
+          })
+          .then(response => {
+            that.cnoList = response.data;
+            console.log("获取新用户列表成功");
+            // console.log(that.serviceList);
+          });
     },
     getSeriveList() {
       let that = this;
@@ -255,6 +288,7 @@ export default {
     }
   },
   created() {
+    this.getCnoList();
     this.getSeriveList();
   }
 };

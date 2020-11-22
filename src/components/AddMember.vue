@@ -139,6 +139,9 @@ export default {
     };
   },
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     getNewUID() {
       let that = this;
       axios
@@ -211,16 +214,7 @@ export default {
             .finally(function() {
               //清空表单
               that.getNewUID();
-              that.form = {
-                id: "",
-                name: "",
-                sex: "",
-                date1: "",
-                date2: "",
-                address: "",
-                money: 0,
-                pass: ""
-              };
+              that.resetForm("form")
             });
           console.log("submit!");
           // console.log(postform);
