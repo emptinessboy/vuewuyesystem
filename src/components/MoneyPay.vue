@@ -157,7 +157,7 @@ export default {
           console.log("获取服务列表失败：", error);
           that.$message({
             showClose: true,
-            message: "连接服务列表失败，请检查网络： " + error,
+            message: "连接服务器失败，请检查网络： " + error,
             type: "warning"
           });
         })
