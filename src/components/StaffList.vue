@@ -109,6 +109,9 @@ export default {
   name: "StaffList",
   props: ["screenHeight"],
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     onSubmit(formName) {
       //这里是表单校验规则
       this.$refs[formName].validate(valid => {
@@ -160,13 +163,8 @@ export default {
             })
             .finally(function() {
               that.getNewEID();
-              // that.newStaff = {
-              //   id: "",
-              //   name: "",
-              //   price: "0",
-              //   desc: ""
-              // };
-              // that.getSeriveList();
+              that.getStaffList();
+              that.resetForm("newStaff")
             });
         }
       });
@@ -191,6 +189,27 @@ export default {
           that.newStaff.id = response.data[0].newid;
           console.log("获取新员工ID：" + that.newStaff.id);
         });
+    },
+    getStaffList(){
+      let that = this;
+      let getform = {
+        want: "elist"
+      };
+      axios
+          // eslint-disable-next-line no-undef
+          .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+          .catch(function(error) {
+            console.log("获取数据：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务器端失败，请检查网络： " + error,
+              type: "warning"
+            });
+          })
+          .then(response => {
+            that.tableData = response.data;
+          })
+          .finally(function() {});
     },
     deleteRow(eno, index, rows) {
       let that = this;
@@ -234,25 +253,7 @@ export default {
   created() {
     //获取屏幕高度
     this.getNewEID();
-    let that = this;
-    let getform = {
-      want: "elist"
-    };
-    axios
-        // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
-      .catch(function(error) {
-        console.log("获取数据：", error);
-        that.$message({
-          showClose: true,
-          message: "连接服务器端失败，请检查网络： " + error,
-          type: "warning"
-        });
-      })
-      .then(response => {
-        that.tableData = response.data;
-      })
-      .finally(function() {});
+    this.getStaffList();
   },
   data() {
     return {
