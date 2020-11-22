@@ -11,15 +11,12 @@
         )
       "
       style="width: 100%;height: 100%;"
+      ><el-table-column prop="id" label="序号" width="80"></el-table-column
       ><el-table-column
-        prop="id"
-        label="序号"
-        width="80"
-    ></el-table-column><el-table-column
         prop="date"
         label="服务时间"
         width="190"
-    ></el-table-column>
+      ></el-table-column>
       <el-table-column prop="cno" label="用户ID" width="140"> </el-table-column>
 
       <el-table-column
@@ -30,7 +27,11 @@
       <el-table-column prop="times" label="次数" width="90"> </el-table-column>
       <el-table-column prop="sid" label="服务ID" width="90"></el-table-column>
       <el-table-column prop="staff" label="员工ID" width="90"></el-table-column>
-      <el-table-column prop="money" label="金额" width="100"> </el-table-column>
+      <el-table-column prop="money" label="金额" width="100">
+        <template slot-scope="scope">
+          <el-tag disable-transitions>{{ scope.row.money }}</el-tag>
+        </template></el-table-column
+      >
 
       <el-table-column
         fixed="right"

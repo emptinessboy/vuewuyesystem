@@ -22,6 +22,7 @@
       :showdelete="this.showdelete"
       :showeidt="this.showeidt"
     ></money-list>
+    <add-money v-if="this.$route.path === '/dashboard/addmoney'"> </add-money>
   </el-main>
 </template>
 
@@ -31,10 +32,18 @@ import AddMember from "@/components/AddMember";
 import ServiceMenu from "@/components/ServiceMenu";
 import MoneyPay from "@/components/MoneyPay";
 import MoneyList from "@/components/MoneyList";
+import AddMoney from "@/components/AddMoney";
 export default {
   name: "DashContent",
   props: ["screenHeight", "showdelete", "showeidt"],
-  components: { MoneyList, MoneyPay, ServiceMenu, AddMember, MemberList },
+  components: {
+    AddMoney,
+    MoneyList,
+    MoneyPay,
+    ServiceMenu,
+    AddMember,
+    MemberList
+  },
   created() {}
 };
 </script>

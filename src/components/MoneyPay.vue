@@ -14,6 +14,7 @@
 
     <el-form-item label="服务名称" prop="service" required>
       <el-select
+        filterable
         v-model="form.service"
         placeholder="请选择对应服务"
         style="width: 100%"

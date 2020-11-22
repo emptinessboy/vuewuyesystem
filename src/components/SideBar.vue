@@ -11,7 +11,7 @@
         collapse
         style="width: 125px; position: fixed; z-index:9; height: 100%; padding-top: 5px;"
       >
-        <el-menu-item index="memberlist">
+        <el-menu-item index="show">
           <i class="el-icon-s-data"></i>
           数据总览
         </el-menu-item>
@@ -50,7 +50,7 @@
           </el-menu-item-group>
           <el-menu-item-group title="分组2">
             <template slot="title">payment</template>
-            <el-menu-item index="4-3">用户充值</el-menu-item>
+            <el-menu-item index="addmoney">用户充值</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
 
