@@ -72,14 +72,14 @@ export default {
   name: "MoneyList",
   props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
-    confirmDelete(cno, index, rows) {
+    confirmDelete(id, index, rows) {
       this.$confirm("确认删除物业费记录吗 ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.deleteRow(cno, index, rows);
+          this.deleteRow(id, index, rows);
         })
         .catch(() => {
           this.$message({

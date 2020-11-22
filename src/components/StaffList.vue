@@ -87,7 +87,7 @@
             <el-button
               style="float: right"
               @click.native.prevent="
-                deleteRow(scope.row.eid, scope.$index, tableData)
+                confirmDelete(scope.row.eid, scope.$index, tableData)
               "
               type="danger"
               size="small"
@@ -164,7 +164,7 @@ export default {
             .finally(function() {
               that.getNewEID();
               that.getStaffList();
-              that.resetForm("newStaff")
+              that.resetForm("newStaff");
             });
         }
       });
@@ -190,27 +190,45 @@ export default {
           console.log("获取新员工ID：" + that.newStaff.id);
         });
     },
-    getStaffList(){
+    getStaffList() {
       let that = this;
       let getform = {
         want: "elist"
       };
       axios
-          // eslint-disable-next-line no-undef
-          .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
-          .catch(function(error) {
-            console.log("获取数据：", error);
-            that.$message({
-              showClose: true,
-              message: "连接服务器端失败，请检查网络： " + error,
-              type: "warning"
-            });
-          })
-          .then(response => {
-            that.tableData = response.data;
-          })
-          .finally(function() {});
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+        .catch(function(error) {
+          console.log("获取数据：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务器端失败，请检查网络： " + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          that.tableData = response.data;
+        })
+        .finally(function() {});
     },
+
+    confirmDelete(eno, index, rows) {
+      this.$confirm("此操作将员工以及相关物业费记录 ?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deleteRow(eno, index, rows);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
     deleteRow(eno, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
