@@ -60,8 +60,8 @@
           >
           <el-menu-item-group>
             <template slot="title">workers</template>
-            <el-menu-item index="3-1">员工列表</el-menu-item>
-            <el-menu-item index="3-2">绩效考核</el-menu-item>
+            <el-menu-item index="staff">员工列表</el-menu-item>
+            <el-menu-item index="score">绩效考核</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
