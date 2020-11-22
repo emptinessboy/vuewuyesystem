@@ -12,11 +12,15 @@
       "
       style="width: 100%;height: 100%;"
       ><el-table-column
+        prop="id"
+        label="序号"
+        width="80"
+    ></el-table-column><el-table-column
         prop="date"
         label="服务时间"
-        width="180"
-      ></el-table-column>
-      <el-table-column prop="cno" label="用户ID" width="130"> </el-table-column>
+        width="190"
+    ></el-table-column>
+      <el-table-column prop="cno" label="用户ID" width="140"> </el-table-column>
 
       <el-table-column
         prop="method"
@@ -24,8 +28,8 @@
         width="120"
       ></el-table-column>
       <el-table-column prop="times" label="次数" width="90"> </el-table-column>
-      <el-table-column prop="sid" label="服务ID" width="80"></el-table-column>
-      <el-table-column prop="staff" label="员工ID" width="80"></el-table-column>
+      <el-table-column prop="sid" label="服务ID" width="90"></el-table-column>
+      <el-table-column prop="staff" label="员工ID" width="90"></el-table-column>
       <el-table-column prop="money" label="金额" width="100"> </el-table-column>
 
       <el-table-column
@@ -47,7 +51,7 @@
           <el-button
             style="float: right"
             @click.native.prevent="
-              deleteRow(scope.row.cno, scope.$index, tableData)
+              deleteRow(scope.row.id, scope.$index, tableData)
             "
             type="danger"
             size="small"
@@ -67,16 +71,16 @@ export default {
   name: "MoneyList",
   props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
-    deleteRow(cno, index, rows) {
+    deleteRow(id, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteno = {
         method: "delete",
-        cno: cno
+        id: id
       };
       axios
         // eslint-disable-next-line no-undef
-        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
+        .post(hxf_conf.BaseUrl + "/api/moneyapi", qs.stringify(deleteno))
         .catch(function(error) {
           console.log("删除失败：", error);
           that.$message({
@@ -92,14 +96,14 @@ export default {
               message: "警告哦，删除失败，请检查服务端和数据库",
               type: "warning"
             });
-            console.log("删除失败：", cno, response.status);
+            console.log("删除失败：", id, response.status);
           } else {
             this.$message({
               showClose: true,
               message: "恭喜你，删除记录成功",
               type: "success"
             });
-            console.log("删除成功：", cno, response.status);
+            console.log("删除成功：", id, response.status);
             rows.splice(index, 1);
           }
         })
