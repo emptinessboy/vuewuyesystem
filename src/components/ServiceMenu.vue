@@ -84,7 +84,7 @@
               style="float: right; padding: 3px 0"
               type="text"
               v-show="showdelete"
-              @click="deleteService(item.sid)"
+              @click="confirmDelete(item.sid)"
               >删除服务</el-button
             >
           </div>
@@ -244,6 +244,22 @@ export default {
             });
         }
       });
+    },
+    confirmDelete(sid) {
+      this.$confirm("此操作将删除服务以及相关物业费记录 ?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deleteService(sid);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     deleteService(sid) {
       let that = this;
