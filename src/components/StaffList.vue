@@ -49,7 +49,7 @@
         </el-switch>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit('newStaff')">提交</el-button>
+        <el-button type="primary" @click="onSubmit('newStaff')">新增</el-button>
       </el-form-item>
     </el-form>
     <!--新增服务表单-->

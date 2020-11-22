@@ -29,6 +29,7 @@
       :showdelete="this.showdelete"
       :showeidt="this.showeidt"
     ></staff-list>
+    <staff-score v-if="this.$route.path === '/dashboard/score'"></staff-score>
   </el-main>
 </template>
 
@@ -40,10 +41,12 @@ import MoneyPay from "@/components/MoneyPay";
 import MoneyList from "@/components/MoneyList";
 import AddMoney from "@/components/AddMoney";
 import StaffList from "@/components/StaffList";
+import StaffScore from "@/components/StaffScore";
 export default {
   name: "DashContent",
   props: ["screenHeight", "showdelete", "showeidt"],
   components: {
+    StaffScore,
     StaffList,
     AddMoney,
     MoneyList,
