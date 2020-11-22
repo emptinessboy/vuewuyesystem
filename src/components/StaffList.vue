@@ -87,7 +87,7 @@
             <el-button
               style="float: right"
               @click.native.prevent="
-                deleteRow(scope.row.eno, scope.$index, tableData)
+                deleteRow(scope.row.eid, scope.$index, tableData)
               "
               type="danger"
               size="small"
@@ -216,7 +216,7 @@ export default {
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteno = {
         method: "delete",
-        eno: eno
+        id: eno
       };
       axios
         // eslint-disable-next-line no-undef
@@ -247,7 +247,9 @@ export default {
             rows.splice(index, 1);
           }
         })
-        .finally(function() {});
+        .finally(function() {
+          that.getNewEID();
+        });
     }
   },
   created() {
