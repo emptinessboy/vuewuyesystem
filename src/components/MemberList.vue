@@ -88,18 +88,18 @@
       >
         <template slot="header">
           <input
-              type="text"
-              v-model="search"
-              placeholder="输入姓名搜索"
-              class="el-input--mini el-input__inner"
-              style="height:30px; line-height: 30px;"
+            type="text"
+            v-model="search"
+            placeholder="输入姓名搜索"
+            class="el-input--mini el-input__inner"
+            style="height:30px; line-height: 30px;"
           />
         </template>
         <template slot-scope="scope">
           <el-button
             style="float: right"
             @click.native.prevent="
-              deleteRow(scope.row.cno, scope.$index, tableData)
+              confirmDelete(scope.row.cno, scope.$index, tableData)
             "
             type="danger"
             size="small"
@@ -149,6 +149,22 @@ export default {
   name: "MemberList",
   props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
+    confirmDelete(cno, index, rows) {
+      this.$confirm("此操作将删除用户以及相关物业费记录 ?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deleteRow(cno, index, rows);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     deleteRow(cno, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
