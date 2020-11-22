@@ -66,12 +66,12 @@
         "
         style="width: 100%;height: 100%;"
       >
-        <el-table-column prop="eno" label="员工ID" width="110">
+        <el-table-column prop="eid" label="员工ID" width="110">
         </el-table-column>
         <el-table-column prop="ename" label="员工姓名" width="120">
         </el-table-column>
         <el-table-column prop="esex" label="性别" width="90"> </el-table-column>
-        <el-table-column prop="isdmin" label="是否管理员" width="100">
+        <el-table-column prop="isadmin" label="是否管理员" width="100">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="130">
           <template slot="header">
@@ -201,7 +201,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
+        .post(hxf_conf.BaseUrl + "/api/staff", qs.stringify(deleteno))
         .catch(function(error) {
           console.log("删除失败：", error);
           that.$message({
@@ -235,12 +235,12 @@ export default {
     //获取屏幕高度
     this.getNewEID();
     let that = this;
-    // 在Vue中this始终指向Vue，但axios中this为undefined
-    // 通过 let that = this
-    // 将this保存在that中，再在函数中使用that均可
+    let getform = {
+      want: "elist"
+    };
     axios
-      // eslint-disable-next-line no-undef
-      .get(hxf_conf.BaseUrl + "/api/listmembers")
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
       .catch(function(error) {
         console.log("获取数据：", error);
         that.$message({
