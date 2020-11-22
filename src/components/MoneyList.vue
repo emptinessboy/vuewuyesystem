@@ -52,7 +52,7 @@
           <el-button
             style="float: right"
             @click.native.prevent="
-              deleteRow(scope.row.id, scope.$index, tableData)
+              confirmDelete(scope.row.id, scope.$index, tableData)
             "
             type="danger"
             size="small"
@@ -72,6 +72,22 @@ export default {
   name: "MoneyList",
   props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
+    confirmDelete(cno, index, rows) {
+      this.$confirm("确认删除物业费记录吗 ?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deleteRow(cno, index, rows);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
     deleteRow(id, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
