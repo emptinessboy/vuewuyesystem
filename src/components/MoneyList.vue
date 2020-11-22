@@ -7,42 +7,26 @@
       :data="
         tableData.filter(
           data =>
-            !search || data.cname.toLowerCase().includes(search.toLowerCase())
+            !search || data.cno.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%;height: 100%;"
-    >
-      <el-table-column prop="cno" label="用户ID" width="150"> </el-table-column>
-      <el-table-column prop="cname" label="用户姓名" width="120">
-        <template slot-scope="scope">
-          <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
-          <span>{{ scope.row.cname }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="csex" label="性别" width="90">
-        <template slot-scope="scope">
-          <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
+      ><el-table-column
+        prop="date"
+        label="服务时间"
+        width="180"
+      ></el-table-column>
+      <el-table-column prop="cno" label="用户ID" width="130"> </el-table-column>
 
-          <span>{{ scope.row.csex }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="caddress" label="用户住址" width="200">
-        <template slot-scope="scope">
-          <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
-
-          <span>{{ scope.row.caddress }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="cregtime" label="入住日期" width="215">
-        <template slot-scope="scope">
-          <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
-
-          <span>{{ scope.row.date }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="cmoney" label="剩余物业费" width="100">
-      </el-table-column>
+      <el-table-column
+        prop="method"
+        label="资金流向"
+        width="120"
+      ></el-table-column>
+      <el-table-column prop="times" label="次数" width="90"> </el-table-column>
+      <el-table-column prop="sid" label="服务ID" width="80"></el-table-column>
+      <el-table-column prop="staff" label="员工ID" width="80"></el-table-column>
+      <el-table-column prop="money" label="金额" width="100"> </el-table-column>
 
       <el-table-column
         fixed="right"
@@ -51,7 +35,13 @@
         v-if="this.showdelete"
       >
         <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="输入姓名搜索" />
+          <input
+            type="text"
+            v-model="search"
+            placeholder="输用户ID搜索"
+            class="el-input--mini el-input__inner"
+            style="height:30px; line-height: 30px;"
+          />
         </template>
         <template slot-scope="scope">
           <el-button
@@ -136,6 +126,7 @@ export default {
       })
       .then(response => {
         that.tableData = response.data;
+        console.log("获取服务记录成功");
       })
       .finally(function() {});
   },

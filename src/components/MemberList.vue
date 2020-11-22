@@ -87,7 +87,13 @@
         v-if="this.showdelete"
       >
         <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="输入姓名搜索" />
+          <input
+              type="text"
+              v-model="search"
+              placeholder="输入姓名搜索"
+              class="el-input--mini el-input__inner"
+              style="height:30px; line-height: 30px;"
+          />
         </template>
         <template slot-scope="scope">
           <el-button
