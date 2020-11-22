@@ -104,6 +104,7 @@
 <script>
 import axios from "axios";
 import qs from "qs";
+import md5 from "js-md5";
 export default {
   name: "StaffList",
   props: ["screenHeight"],
@@ -122,7 +123,8 @@ export default {
             id: this.newStaff.id,
             name: this.newStaff.name,
             sex: this.newStaff.sex,
-            pass: this.newStaff.pass,
+            //这里为md5加盐，增加数据安全性
+            pass: md5("huxiaofan" + this.newStaff.pass),
             isadmin: this.newStaff.isadmin
           };
           axios
@@ -231,7 +233,7 @@ export default {
   },
   created() {
     //获取屏幕高度
-    // this.getScreenHeight();
+    this.getNewEID();
     let that = this;
     // 在Vue中this始终指向Vue，但axios中this为undefined
     // 通过 let that = this
