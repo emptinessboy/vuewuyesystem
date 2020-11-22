@@ -1,52 +1,103 @@
 <template>
-  <!--用户列表-->
-  <div v-if="tableData != null">
-    <!--使用过滤器搜索-->
-    <el-table
-        :max-height="this.screenHeight - 165"
-        :data="
-        tableData.filter(
-          data =>
-            !search || data.cname.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-        style="width: 100%;height: 100%;"
+  <div>
+    <!--新增服务表单-->
+    <el-form
+      label-position="left"
+      ref="newStaff"
+      :rules="rules"
+      :inline="true"
+      :model="newStaff"
+      class="demo-form-inline"
     >
-      <el-table-column prop="eno" label="员工ID" width="110"> </el-table-column>
-      <el-table-column prop="ename" label="员工姓名" width="120">
-      </el-table-column>
-      <el-table-column prop="esex" label="性别" width="90">
-      </el-table-column>
-      <el-table-column prop="caddress" label="是否管理员" width="100">
-      </el-table-column>
-      <el-table-column
-          fixed="right"
-          label="操作"
-          width="130"
+      <el-form-item label="员工 EID">
+        <el-input
+          v-model="newStaff.id"
+          placeholder="员工ID"
+          :disabled="true"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="员工姓名" prop="name">
+        <el-input v-model="newStaff.name" placeholder="员工姓名"></el-input>
+      </el-form-item>
+      <!--使用allow-create属性即可通过在输入框中输入文字来创建新的条目。注意此时filterable必须为真。本例还使用了default-first-option属性，在该属性打开的情况下，按下回车就可以选中当前选项列表中的第一个选项，无需使用鼠标或键盘方向键进行定位。-->
+      <el-form-item label="员工性别" prop="sex">
+        <el-select
+          type="number"
+          v-model="newStaff.sex"
+          placeholder="选择性别"
+          default-first-option
+        >
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="登录密码" prop="pass">
+        <el-input
+          v-model="newStaff.pass"
+          placeholder="员工密码"
+          show-password
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="">
+        <el-switch
+          v-model="newStaff.isadmin"
+          active-text="管理员"
+          inactive-text="普通员工"
+        >
+        </el-switch>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit('newStaff')">提交</el-button>
+      </el-form-item>
+    </el-form>
+    <!--新增服务表单-->
+
+    <!--用户列表-->
+    <div v-if="tableData != null">
+      <!--使用过滤器搜索-->
+      <el-table
+        :data="
+          tableData.filter(
+            data =>
+              !search || data.ename.toLowerCase().includes(search.toLowerCase())
+          )
+        "
+        style="width: 100%;height: 100%;"
       >
-        <template slot="header">
-          <input
+        <el-table-column prop="eno" label="员工ID" width="110">
+        </el-table-column>
+        <el-table-column prop="ename" label="员工姓名" width="120">
+        </el-table-column>
+        <el-table-column prop="esex" label="性别" width="90"> </el-table-column>
+        <el-table-column prop="isdmin" label="是否管理员" width="100">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="130">
+          <template slot="header">
+            <input
               type="text"
               v-model="search"
               placeholder="输入姓名搜索"
               class="el-input--mini el-input__inner"
               style="height:30px; line-height: 30px;"
-          />
-        </template>
-        <template slot-scope="scope">
-          <el-button
+            />
+          </template>
+          <template slot-scope="scope">
+            <el-button
               style="float: right"
               @click.native.prevent="
-              deleteRow(scope.row.cno, scope.$index, tableData)
-            "
+                deleteRow(scope.row.eno, scope.$index, tableData)
+              "
               type="danger"
               size="small"
-          >
-            移除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+            >
+              移除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -55,90 +106,127 @@ import axios from "axios";
 import qs from "qs";
 export default {
   name: "StaffList",
-  props: ["screenHeight", "showdelete", "showeidt"],
+  props: ["screenHeight"],
   methods: {
-    deleteRow(cno, index, rows) {
+    onSubmit(formName) {
+      //这里是表单校验规则
+      this.$refs[formName].validate(valid => {
+        if (!valid) {
+          console.log("error submit!!");
+        } else {
+          //下面是post请求部分
+          let that = this;
+          //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+          let postform = {
+            method: "add",
+            id: this.newStaff.id,
+            name: this.newStaff.name,
+            sex: this.newStaff.sex,
+            pass: this.newStaff.pass,
+            isadmin: this.newStaff.isadmin
+          };
+          axios
+            .post(
+              // eslint-disable-next-line no-undef
+              hxf_conf.BaseUrl + "/api/staff",
+              qs.stringify(postform)
+            )
+            .catch(function(error) {
+              console.log("添加失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，添加失败,错误原因：" + error,
+                type: "warning"
+              });
+            })
+            .then(response => {
+              if (response.status != 200) {
+                this.$message({
+                  showClose: true,
+                  message: "警告哦，添加失败，请检查服务端和数据库",
+                  type: "warning"
+                });
+                console.log("保存失败：", response.status);
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，添加员工成功",
+                  type: "success"
+                });
+                console.log("添加员工成功：", response.status);
+              }
+            })
+            .finally(function() {
+              that.getNewEID();
+              // that.newStaff = {
+              //   id: "",
+              //   name: "",
+              //   price: "0",
+              //   desc: ""
+              // };
+              // that.getSeriveList();
+            });
+        }
+      });
+    },
+    getNewEID() {
+      let that = this;
+      let getform = {
+        want: "eid"
+      };
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+        .catch(function(error) {
+          console.log("获取新员工ID失败：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务器端失败，请检查网络： " + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          that.newStaff.id = response.data[0].newid;
+          console.log("获取新员工ID：" + that.newStaff.id);
+        });
+    },
+    deleteRow(eno, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteno = {
         method: "delete",
-        cno: cno
+        eno: eno
       };
       axios
-          // eslint-disable-next-line no-undef
-          .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
-          .catch(function(error) {
-            console.log("删除失败：", error);
-            that.$message({
+        // eslint-disable-next-line no-undef
+        .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            type: "warning"
+          });
+        })
+        .then(response => {
+          if (response.status != 200) {
+            this.$message({
               showClose: true,
-              message: "警告哦，删除失败,错误原因：" + error,
+              message: "警告哦，删除失败，请检查服务端和数据库",
               type: "warning"
             });
-          })
-          .then(response => {
-            if (response.status != 200) {
-              this.$message({
-                showClose: true,
-                message: "警告哦，删除失败，请检查服务端和数据库",
-                type: "warning"
-              });
-              console.log("删除失败：", cno, response.status);
-            } else {
-              this.$message({
-                showClose: true,
-                message: "恭喜你，删除记录成功",
-                type: "success"
-              });
-              console.log("删除成功：", cno, response.status);
-              rows.splice(index, 1);
-            }
-          })
-          .finally(function() {});
-    },
-    eidtRow(cno) {
-      this.eidtindex = cno;
-      console.log("进入编辑模式成功");
-    },
-    saveRow(row) {
-      // console.log(row);
-      let that = this;
-      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
-      let eidtno = {
-        method: "modify",
-        row: row
-      };
-      axios
-          // eslint-disable-next-line no-undef
-          .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(eidtno))
-          .catch(function(error) {
-            console.log("保存失败：", error);
-            that.$message({
+            console.log("删除失败：", eno, response.status);
+          } else {
+            this.$message({
               showClose: true,
-              message: "警告哦，保存失败,错误原因：" + error,
-              type: "warning"
+              message: "恭喜你，删除记录成功",
+              type: "success"
             });
-          })
-          .then(response => {
-            if (response.status != 200) {
-              this.$message({
-                showClose: true,
-                message: "警告哦，保存失败，请检查服务端和数据库",
-                type: "warning"
-              });
-              console.log("保存失败：", response.status);
-            } else {
-              this.$message({
-                showClose: true,
-                message: "恭喜你，保存数据成功",
-                type: "success"
-              });
-              console.log("保存成功：", response.status);
-            }
-          })
-          .finally(function() {});
-      //去除编辑框，改为显示span
-      this.eidtindex = "";
-      console.log("保存数据到数据库成功");
+            console.log("删除成功：", eno, response.status);
+            rows.splice(index, 1);
+          }
+        })
+        .finally(function() {});
     }
   },
   created() {
@@ -149,29 +237,51 @@ export default {
     // 通过 let that = this
     // 将this保存在that中，再在函数中使用that均可
     axios
-        // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/listmembers")
-        .catch(function(error) {
-          console.log("获取数据：", error);
-          that.$message({
-            showClose: true,
-            message: "连接服务器端失败，请检查网络： " + error,
-            type: "warning"
-          });
-        })
-        .then(response => {
-          that.tableData = response.data;
-        })
-        .finally(function() {});
+      // eslint-disable-next-line no-undef
+      .get(hxf_conf.BaseUrl + "/api/listmembers")
+      .catch(function(error) {
+        console.log("获取数据：", error);
+        that.$message({
+          showClose: true,
+          message: "连接服务器端失败，请检查网络： " + error,
+          type: "warning"
+        });
+      })
+      .then(response => {
+        that.tableData = response.data;
+      })
+      .finally(function() {});
   },
   data() {
     return {
       //绑定搜索的字符串
       search: "",
-      eidtindex: "",
       loading: true,
       //获得axios的response前tableData值为null
-      tableData: null
+      tableData: null,
+      newStaff: {
+        id: "",
+        name: "",
+        sex: "",
+        pass: "",
+        isadmin: false
+      },
+      rules: {
+        name: [
+          { required: true, message: "请输入员工姓名", trigger: "blur" },
+          { min: 1, max: 5, message: "不超过 5 个字符", trigger: "blur" }
+        ],
+        sex: [{ required: true, message: "性别不能为空" }],
+        pass: [
+          {
+            required: true,
+            min: 6,
+            max: 20,
+            message: "长度在 6 到 20 个字符",
+            trigger: "blur"
+          }
+        ]
+      }
     };
   }
 };

@@ -34,7 +34,7 @@
         <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>登录</el-dropdown-item>
+          <router-link to="/login"><el-dropdown-item>登录</el-dropdown-item></router-link>
           <el-dropdown-item>注册</el-dropdown-item>
           <el-dropdown-item>注销</el-dropdown-item>
           <el-dropdown-item>用户信息</el-dropdown-item>

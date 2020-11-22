@@ -87,7 +87,7 @@ export default {
         uid: "",
         pass: "",
         age: "",
-        isStaff: false
+        isStaff: true
       },
       rules: {
         name: [
