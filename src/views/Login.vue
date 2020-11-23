@@ -91,6 +91,7 @@
 import md5 from "js-md5";
 import axios from "axios";
 import qs from "qs";
+import {mapMutations} from "vuex";
 
 export default {
   name: "Login",
@@ -120,6 +121,12 @@ export default {
     };
   },
   methods: {
+    //Vue中…mapMutations传递参数 通过子组件定义的方法传递参数，在…mapMutations引用。
+    ...mapMutations(['changeLogin']),
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.loginForm.uid = "";
+    },
     submitForm(formName) {
       //这里是表单校验规则
       this.$refs[formName].validate(valid => {
@@ -163,28 +170,27 @@ export default {
             })
             .then(response => {
               if (response.status == 200) {
+
+                //存 token 到 VUEX 的 Authorization 和 Localstorage
+                that.$store.commit("changeLogin",JSON.stringify(response.data[0]))
+                console.log(JSON.stringify(response.data[0]))
                 this.$message({
                   showClose: true,
                   message: "恭喜你，登录成功",
                   offset: 70,
                   type: "success"
                 });
-                console.log("保存成功：", response.status);
+                console.log("登录成功：", response.status);
               }
             })
             .finally(function() {
               //清空表单
-              that.getNewUID();
-              that.resetForm("form");
+              that.resetForm("loginForm");
             });
           console.log("submit!");
           // console.log(postform);
         }
       });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.loginForm.uid = "";
     }
   }
 };

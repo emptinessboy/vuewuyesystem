@@ -13,9 +13,12 @@ export default new Vuex.Store({
 
   mutations: {
     // 修改token，并将token存入localStorage
-    changeLogin (state, user) {
-      state.Authorization = user.Authorization;
-      localStorage.setItem('Authorization', user.Authorization);
+    changeLogin (state,auth) {
+      //第一个参数，操作谁 操作 state
+      //这句话修改 vuex 中 Authorization 的值
+      state.Authorization = auth;
+      //这句话将数据存入 localstorage 中
+      localStorage.setItem('Authorization', auth);
     }
   },
   actions: {},
