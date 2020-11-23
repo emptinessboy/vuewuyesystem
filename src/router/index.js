@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import el from "element-ui/src/locale/lang/el";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,29 @@ const routes = [
 
 const router = new VueRouter({
   routes
+});
+
+// 导航守卫
+// 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
+router.beforeEach((to, from, next) => {
+  if (to.path === "/login") {
+    next();
+  } else {
+    let auth = localStorage.getItem("Authorization");
+    let token = null;
+    if (auth == null) {
+      next("/login");
+    } else {
+      token = JSON.parse(auth).token;
+      console.log("router取得的token为：" + token);
+    }
+
+    if (token == null || token == "") {
+      next("/login");
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;

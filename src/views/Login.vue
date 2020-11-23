@@ -172,6 +172,7 @@ export default {
               if (response.status == 200) {
 
                 //存 token 到 VUEX 的 Authorization 和 Localstorage
+                //这里使用了 JSON.stringfy 将json存入，因为localstorage不允许存对象，只能字符串
                 that.$store.commit("changeLogin",JSON.stringify(response.data[0]))
                 console.log(JSON.stringify(response.data[0]))
                 this.$message({
