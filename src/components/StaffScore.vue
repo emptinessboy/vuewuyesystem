@@ -30,7 +30,7 @@ export default {
         return "one-row";
       } else if (rowIndex === 1) {
         return "two-row";
-      }else if (rowIndex === 2){
+      } else if (rowIndex === 2) {
         return "tree-row";
       }
       return "";
@@ -42,7 +42,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
         .catch(function(error) {
           console.log("获取数据：", error);
           that.$message({

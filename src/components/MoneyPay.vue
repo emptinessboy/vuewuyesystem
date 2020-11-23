@@ -9,23 +9,22 @@
     :rules="rules"
   >
     <el-form-item label="用户ID" prop="uid">
-
       <el-select
-          filterable
-          v-model="form.uid"
-          placeholder="请选择用户"
-          style="width: 100%"
+        filterable
+        v-model="form.uid"
+        placeholder="请选择用户"
+        style="width: 100%"
       >
         <el-option
-            v-for="item in cnoList"
-            :key="item.cno"
-            :label="'ID-' + item.cno + '  ' + item.cname"
-            :value="item.cno"
+          v-for="item in cnoList"
+          :key="item.cno"
+          :label="'ID-' + item.cno + '  ' + item.cname"
+          :value="item.cno"
         >
         </el-option>
       </el-select>
 
-<!--      <el-input v-model="form.uid" type="number" class="elinput"></el-input>-->
+      <!--      <el-input v-model="form.uid" type="number" class="elinput"></el-input>-->
     </el-form-item>
 
     <el-form-item label="服务名称" prop="service" required>
@@ -109,7 +108,7 @@ export default {
   name: "MoneyPay",
   data() {
     return {
-      cnoList:[],
+      cnoList: [],
       serviceList: [],
       max: 5,
       min: 1,
@@ -162,22 +161,22 @@ export default {
     getCnoList() {
       let that = this;
       axios
-          // eslint-disable-next-line no-undef
-          .get(hxf_conf.BaseUrl + "/api/listmembers")
-          .catch(function(error) {
-            console.log("获取用户列表失败：", error);
-            that.$message({
-              showClose: true,
-              message: "连接服务器失败，请检查网络： " + error,
-              offset: 66,
-              type: "warning"
-            });
-          })
-          .then(response => {
-            that.cnoList = response.data;
-            console.log("获取新用户列表成功");
-            // console.log(that.serviceList);
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/listmembers")
+        .catch(function(error) {
+          console.log("获取用户列表失败：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务器失败，请检查网络： " + error,
+            offset: 66,
+            type: "warning"
           });
+        })
+        .then(response => {
+          that.cnoList = response.data;
+          console.log("获取新用户列表成功");
+          // console.log(that.serviceList);
+        });
     },
     getSeriveList() {
       let that = this;
@@ -186,7 +185,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/servicemanage?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/servicemanage?", { params: getform })
         .catch(function(error) {
           console.log("获取服务列表失败：", error);
           that.$message({

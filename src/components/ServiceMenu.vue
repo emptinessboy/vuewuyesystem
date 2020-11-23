@@ -147,7 +147,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/servicemanage?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/servicemanage?", { params: getform })
         .catch(function(error) {
           console.log("获取服务列表失败：", error);
           that.$message({
@@ -170,7 +170,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/servicemanage?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/servicemanage?", { params: getform })
         .catch(function(error) {
           console.log("获取新服务ID失败：", error);
           that.$message({

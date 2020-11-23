@@ -179,7 +179,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
         .catch(function(error) {
           console.log("获取新员工ID失败：", error);
           that.$message({
@@ -201,7 +201,7 @@ export default {
       };
       axios
         // eslint-disable-next-line no-undef
-        .get(hxf_conf.BaseUrl + "/api/staff?" + qs.stringify(getform))
+        .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
         .catch(function(error) {
           console.log("获取数据：", error);
           that.$message({
