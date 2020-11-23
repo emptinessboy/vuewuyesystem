@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 const hxf_conf = {
     BaseUrl: "http://127.0.0.1:8080",
-    // BaseUrl: "http://xxx.api.com",
+    // BaseUrl: "http://localhost:8081/remoapi/api/",
     appkey: "",
     token: ""
 }
