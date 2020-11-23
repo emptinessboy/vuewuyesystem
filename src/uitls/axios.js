@@ -1,26 +1,34 @@
 // 添加请求拦截器，在请求头中加token
 import router from "@/router";
-
 const axios = require("axios");
-// 这里请求加header后就会出现跨域问题，暂时弃用拦截器
-// axios.defaults.withCredentials = true;
-// axios.defaults.crossDomain = true;
-// axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
-// axios.interceptors.request.use(
-//   config => {
-//     if (localStorage.getItem("Authorization")) {
-//       let token = JSON.parse(localStorage.getItem("Authorization")).token;
 
-      // config.headers.Authorization = token;
-      // console.log("拦截器设置token完毕"+token);
-    // }
-//
-//     return config;
-//   },
-//   error => {
-//     return Promise.reject(error);
-//   }
-// );
+// axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
+// axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem("Authorization")) {
+      let token = JSON.parse(localStorage.getItem("Authorization")).token;
+      // 这里请求加header后就会出现跨域问题，暂时弃用header，貌似听大佬说要后端允许？以后再研究
+      // config.headers['Authorization'] = token;
+      if (config.method === "post") {
+        config.data = "token=" + token + "&" + config.data;
+      } else if (config.method === "get") {
+        console.log(config.params)
+        if (config.params === "undefined"){
+          config.url = config.url + "?token=" + token;
+        }else {
+          config.url = config.url + "&token=" + token;
+        }
+      }
+      console.log("拦截器设置token参数完毕：" + token);
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 // 添加响应拦截器
 axios.interceptors.response.use(
