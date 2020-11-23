@@ -38,47 +38,60 @@
       :md="12"
       :lg="9"
       id="login"
-      style="padding: 4rem 2.5rem 5rem 2.5rem;"
+      style="padding: 1rem 0rem 5rem 0rem;"
     >
-      <el-form
-        style="margin: auto;align-items:center;height: 100%"
-        labelPosition="top"
-        :model="loginForm"
-        status-icon
-        :rules="rules"
-        ref="loginForm"
-        label-width="100px"
+      <div
+        style="margin: 0;align-items:center;height: 100%;
+        display: flex;justify-content:center;flex-direction:column;"
       >
-        <h1>用户登录</h1>
-        <el-form-item label="用户ID" prop="name">
-          <el-input
-            type="text"
-            v-model="loginForm.uid"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input
-            type="password"
-            v-model="loginForm.pass"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="是否为员工？" prop="staff">
-          <el-switch v-model="loginForm.isStaff"> </el-switch>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('loginForm')"
-            >提交</el-button
+        <el-form
+          style="margin: 0;width: 70%;"
+          labelPosition="top"
+          :model="loginForm"
+          status-icon
+          :rules="rules"
+          ref="loginForm"
+          label-width="100px"
+        >
+          <h1>用户登录</h1>
+          <el-form-item label="用户ID" prop="uid">
+            <el-input
+              type="text"
+              v-model="loginForm.uid"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="pass">
+            <el-input
+              type="password"
+              v-model="loginForm.pass"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="是否为员工？"
+            prop="staff"
+            style="margin-bottom: 25px;"
           >
-          <el-button @click="resetForm('loginForm')">重置</el-button>
-        </el-form-item>
-      </el-form>
+            <el-switch v-model="loginForm.isStaff"> </el-switch>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('loginForm')"
+              >提交</el-button
+            >
+            <el-button @click="resetForm('loginForm')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-col>
   </el-row>
 </template>
 
 <script>
+import md5 from "js-md5";
+import axios from "axios";
+import qs from "qs";
+
 export default {
   name: "Login",
   data() {
@@ -90,17 +103,17 @@ export default {
         isStaff: true
       },
       rules: {
-        name: [
+        uid: [
           { required: true, message: "请输入用户ID", trigger: "blur" },
           { min: 1, max: 15, message: "超出长度限制", trigger: "blur" }
         ],
         pass: [
           {
-            min: 1,
-            max: 16,
+            min: 6,
+            max: 20,
             message: "密码长度为 6-20 个字符",
             trigger: "blur",
-            required: true,
+            required: true
           }
         ]
       }
@@ -108,18 +121,70 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      //这里是表单校验规则
       this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
+        if (!valid) {
           console.log("error submit!!");
-          return false;
+        } else {
+          //下面是post请求部分
+          let that = this;
+          //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+          let postform = {
+            method: "login",
+            type: this.loginForm.isStaff ? "staff" : "user",
+            user: this.loginForm.uid,
+            //这里为md5加盐，增加数据安全性
+            pass: md5("huxiaofan" + this.loginForm.pass)
+          };
+          axios
+            .post(
+              // eslint-disable-next-line no-undef
+              hxf_conf.BaseUrl + "/api/login",
+              qs.stringify(postform)
+            )
+            .catch(error => {
+              if (error.response.status == 401) {
+                this.$message({
+                  showClose: true,
+                  message: "登录失败，用户名或密码错误",
+                  offset: 70,
+                  type: "error"
+                });
+                console.log("登录失败：", error.response.status);
+              } else {
+                console.log("登录失败：", error);
+                that.$message({
+                  showClose: true,
+                  message: "警告哦，登录失败,错误原因：" + error,
+                  offset: 70,
+                  type: "warning"
+                });
+              }
+            })
+            .then(response => {
+              if (response.status == 200) {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，登录成功",
+                  offset: 70,
+                  type: "success"
+                });
+                console.log("保存成功：", response.status);
+              }
+            })
+            .finally(function() {
+              //清空表单
+              that.getNewUID();
+              that.resetForm("form");
+            });
+          console.log("submit!");
+          // console.log(postform);
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.loginForm.uid = ""
+      this.loginForm.uid = "";
     }
   }
 };
@@ -135,7 +200,9 @@ export default {
   height: calc(100vh - 60px);
   width: 100%;
 }
-
+.login .el-form-item {
+  margin-bottom: 15px;
+}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 14px;
@@ -150,5 +217,10 @@ export default {
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
+}
+</style>
+<style>
+.login .el-form-item .el-form-item__label {
+  padding: 0px !important;
 }
 </style>

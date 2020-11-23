@@ -38,4 +38,6 @@ div:focus {
 .el-menu.el-menu--horizontal {
   border-bottom: solid 1px #474747 !important;
 }
+/*重写警告弹窗样式*/
+
 </style>

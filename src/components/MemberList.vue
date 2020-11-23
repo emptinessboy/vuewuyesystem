@@ -63,6 +63,7 @@
         <template slot-scope="scope">
           <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
           <el-date-picker
+            value-format="yyyy-MM-dd HH:mm:ss"
             v-show="scope.row.cno == eidtindex && showeidt"
             v-model="scope.row.cregtime"
             type="datetime"
