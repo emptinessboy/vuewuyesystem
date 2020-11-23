@@ -178,7 +178,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "恭喜你，登录成功，正在跳转",
-                  offset: 70,
+                  offset: 66,
                   type: "success"
                 });
                 console.log("登录成功：", response.status);

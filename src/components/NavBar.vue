@@ -34,7 +34,9 @@
         <!--右下角蓝色的下拉菜单，使用原生dropdownmenu实现-->
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/login"><el-dropdown-item>登录</el-dropdown-item></router-link>
+          <router-link to="/login"
+            ><el-dropdown-item>登录</el-dropdown-item></router-link
+          >
           <el-dropdown-item>注册</el-dropdown-item>
           <el-dropdown-item>注销</el-dropdown-item>
           <el-dropdown-item>用户信息</el-dropdown-item>
@@ -47,8 +49,9 @@
       disabled
     >
       <!--判断是否登录提示-->
-      <span v-if="!islogined">您还没登录!</span>
-      <span v-else>欢迎!</span>
+      <span v-if="userinfo.eid != null">员工：{{ userinfo.ename }}</span>
+      <span v-else-if="userinfo.cid != null">住户：{{ userinfo.ename }}</span>
+      <span v-else>请先登录！</span>
     </el-menu-item>
   </el-menu>
 </template>
@@ -60,7 +63,10 @@ export default {
   data() {
     return {
       showbar: true,
-      islogined: false,
+      userinfo: {
+        cid: null,
+        eid: null
+      },
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       activeIndex: "1",
@@ -75,7 +81,24 @@ export default {
       this.showbar = !this.showbar;
       console.log("是否显示侧边栏： " + this.showbar);
       Event.$emit("isshowbar", this.showbar);
+    },
+    getUserInfo(){
+      try {
+        this.userinfo = JSON.parse(this.$store.state.Authorization);
+      }catch (e) {
+        console.log("未获取到 LocalStorage 中的存储信息！")
+      }
     }
+  },
+  watch: {
+    // 登陆后刷新导航栏用户名
+    '$store.state.Authorization': function () {
+      this.getUserInfo();
+    }
+  },
+  created() {
+    // 登陆后刷新导航栏用户名
+    this.getUserInfo();
   }
 };
 </script>

@@ -53,7 +53,7 @@ axios.interceptors.response.use(
         path: "/login",
         query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
       });
-
+      //弹出弹窗提示登录失效
       ElementUI.Message({
         showClose: true,
         message: "页面需要登录 或者 您的登录已经过期 ",
