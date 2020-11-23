@@ -1,6 +1,6 @@
 // 添加请求拦截器，在请求头中加token
 import router from "@/router";
-import qs from "qs";
+import ElementUI from 'element-ui';
 const axios = require("axios");
 
 // axios.defaults.withCredentials = true;
@@ -19,13 +19,13 @@ axios.interceptors.request.use(
         config.data = "token=" + token + "&" + config.data;
       } else if (config.method === "get") {
         // console.log(config.params);
-        if (typeof(config.params) == undefined) {
+        if (typeof config.params == undefined) {
           // 没有参数的处理方式
           config.url = config.url + "?token=" + token;
         } else {
           // 合并两个参数
           // 貌似多一个空参数，算了不管了
-          config.params = Object.assign({"token":token}, config.params);
+          config.params = Object.assign({ token: token }, config.params);
         }
       }
       console.log("拦截器设置token参数完毕：" + token);
@@ -44,18 +44,26 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response) {
-      switch (error.response.status) {
-        case 405:
-          // 这里写清除token的代码
-          router.replace({
-            path: "login",
-            query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
-          });
-      }
+    // 捕获登录异常的 405 错误
+    if (error.response.status === 405) {
+      console.log("用户未登录：", error);
+      // 这里写清除token的代码
+      localStorage.removeItem('Authorization');
+      router.replace({
+        path: "/login",
+        query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
+      });
+
+      ElementUI.Message({
+        showClose: true,
+        message: "页面需要登录 或者 您的登录已经过期 ",
+        offset: 66,
+        type: "warning"
+      });
+      return
+    } else {
+      // 剩余的错误交给每个页面自行处理
+      return Promise.reject(error);
     }
-    // 对响应错误做点什么
-    console.log("出错了 " + error);
-    return Promise.reject(error);
   }
 );

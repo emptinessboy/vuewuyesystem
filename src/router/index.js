@@ -53,9 +53,17 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  }else {
+  } else {
     next();
   }
+  // if (to.path === "/login") {
+  //   if (localStorage.getItem("Authorization")) {
+  //     next();
+  //     // next("/dashboard/show");
+  //   } else {
+  //     next();
+  //   }
+  // }
 });
 
 export default router;
