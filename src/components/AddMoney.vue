@@ -91,6 +91,7 @@ export default {
           that.$message({
             showClose: true,
             message: "连接服务器失败，请检查网络： " + error,
+            offset: 66,
             type: "warning"
           });
         })
@@ -127,6 +128,7 @@ export default {
               that.$message({
                 showClose: true,
                 message: "警告哦，充值失败,错误原因：" + error,
+                offset: 66,
                 type: "warning"
               });
             })
@@ -135,6 +137,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "警告哦，充值失败，请检查服务端和数据库",
+                  offset: 66,
                   type: "warning"
                 });
                 console.log("保存失败：", response.status);
@@ -142,6 +145,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "恭喜你，充值成功",
+                  offset: 66,
                   type: "success"
                 });
                 console.log("充值成功：", response.status);

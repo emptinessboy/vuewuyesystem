@@ -169,6 +169,7 @@ export default {
             that.$message({
               showClose: true,
               message: "连接服务器失败，请检查网络： " + error,
+              offset: 66,
               type: "warning"
             });
           })
@@ -191,6 +192,7 @@ export default {
           that.$message({
             showClose: true,
             message: "连接服务器失败，请检查网络： " + error,
+            offset: 66,
             type: "warning"
           });
         })
@@ -228,6 +230,7 @@ export default {
               that.$message({
                 showClose: true,
                 message: "警告哦，扣缴失败,错误原因：" + error,
+                offset: 66,
                 type: "warning"
               });
             })
@@ -236,6 +239,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "错误：未找到用户 ID",
+                  offset: 66,
                   type: "warning"
                 });
                 console.log("保存失败：", response.status);
@@ -243,6 +247,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "错误：用户余额不足，需要充值",
+                  offset: 66,
                   type: "warning"
                 });
                 console.log("保存失败：", response.status);
@@ -250,6 +255,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "内部错误：用户扣款失败",
+                  offset: 66,
                   type: "error"
                 });
                 console.log("保存失败：", response.status);
@@ -257,6 +263,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "警告哦，扣缴失败，请检查服务端和数据库",
+                  offset: 66,
                   type: "error"
                 });
                 console.log("保存失败：", response.status);
@@ -264,6 +271,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "恭喜你，扣缴成功",
+                  offset: 66,
                   type: "success"
                 });
                 console.log("扣缴成功：", response.status);

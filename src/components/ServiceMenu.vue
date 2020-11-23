@@ -153,6 +153,7 @@ export default {
           that.$message({
             showClose: true,
             message: "连接服务列表失败，请检查网络： " + error,
+            offset: 66,
             type: "warning"
           });
         })
@@ -175,6 +176,7 @@ export default {
           that.$message({
             showClose: true,
             message: "连接服务器端失败，请检查网络： " + error,
+            offset: 66,
             type: "warning"
           });
         })
@@ -212,6 +214,7 @@ export default {
               that.$message({
                 showClose: true,
                 message: "警告哦，添加失败,错误原因：" + error,
+                offset: 66,
                 type: "warning"
               });
             })
@@ -220,6 +223,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "警告哦，添加失败，请检查服务端和数据库",
+                  offset: 66,
                   type: "warning"
                 });
                 console.log("保存失败：", response.status);
@@ -227,6 +231,7 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "恭喜你，添加服务成功",
+                  offset: 66,
                   type: "success"
                 });
                 console.log("保存成功：", response.status);
@@ -257,6 +262,7 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
+            offset: 66,
             message: "已取消删除"
           });
         });
@@ -276,6 +282,7 @@ export default {
           that.$message({
             showClose: true,
             message: "警告哦，删除失败,错误原因：" + error,
+            offset: 66,
             type: "warning"
           });
         })
@@ -284,6 +291,7 @@ export default {
             this.$message({
               showClose: true,
               message: "警告哦，删除失败，请检查服务端和数据库",
+              offset: 66,
               type: "warning"
             });
             console.log("删除失败：", sid, response.status);
@@ -291,6 +299,7 @@ export default {
             this.$message({
               showClose: true,
               message: "恭喜你，删除记录成功",
+              offset: 66,
               type: "success"
             });
             console.log("删除成功：", sid, response.status);
