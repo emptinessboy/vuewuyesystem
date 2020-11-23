@@ -177,11 +177,13 @@ export default {
                 console.log(JSON.stringify(response.data[0]))
                 this.$message({
                   showClose: true,
-                  message: "恭喜你，登录成功",
+                  message: "恭喜你，登录成功，正在跳转",
                   offset: 70,
                   type: "success"
                 });
                 console.log("登录成功：", response.status);
+                //登录成功后跳转
+                that.$router.push("/dashboard/show")
               }
             })
             .finally(function() {

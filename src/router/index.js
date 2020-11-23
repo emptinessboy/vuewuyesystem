@@ -19,6 +19,9 @@ const routes = [
     //实现动态路由，根据参数进入不同的控制面板
     path: "/dashboard/:path",
     name: "DashBoard",
+    meta: {
+      needLogin: true
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -34,9 +37,8 @@ const router = new VueRouter({
 // 导航守卫
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
-  if (to.path === "/login") {
-    next();
-  } else {
+  //所有设置meta的，needlogin为true的都守卫
+  if (to.meta.needLogin == true) {
     let auth = localStorage.getItem("Authorization");
     let token = null;
     if (auth == null) {
@@ -51,6 +53,8 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
+  }else {
+    next();
   }
 });
 
