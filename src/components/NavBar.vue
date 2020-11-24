@@ -89,12 +89,18 @@ export default {
         .finally(function() {
           // 本地存储中删除 token
           window.localStorage.removeItem("Authorization");
+          console.log("服务器 token 和本地 cookie 注销成功");
           that.$message({
             showClose: true,
             message: "注销成功！请重新登录",
             offset: 66,
             type: "success"
           });
+          //清除用户信息
+          that.userinfo = {
+            cid: null,
+            eid: null
+          };
           that.$router.push("/login");
         });
     },
@@ -113,6 +119,7 @@ export default {
     },
     getUserInfo() {
       try {
+        console.log("导航栏更新用户信息");
         this.userinfo = JSON.parse(this.$store.state.Authorization);
       } catch (e) {
         console.log("未获取到 LocalStorage 中的存储信息！");
