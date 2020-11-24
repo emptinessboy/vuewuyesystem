@@ -34,11 +34,11 @@
               >登录</el-dropdown-item
             ></router-link
           >
-          <el-dropdown-item
-            @click="logOut"
-            v-show="userinfo.eid || userinfo.cid"
-            >注销</el-dropdown-item
-          >
+          <span @click="logOut()">
+            <el-dropdown-item v-show="userinfo.eid || userinfo.cid"
+              >注销</el-dropdown-item
+            >
+          </span>
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu-item>
@@ -75,6 +75,7 @@ export default {
   },
   methods: {
     logOut() {
+      console.log("触发注销");
       let that = this;
       // 在Vue中this始终指向Vue，但axios中this为undefined
       // 通过 let that = this
