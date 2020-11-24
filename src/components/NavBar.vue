@@ -18,8 +18,9 @@
 
     <el-submenu index="/2">
       <template slot="title">导航</template>
-      <el-menu-item index="2-1">首页</el-menu-item>
-      <el-menu-item index="2-2">前台</el-menu-item>
+      <el-menu-item index="/">首页</el-menu-item>
+      <el-menu-item index="/dashboard/show">控制面板</el-menu-item>
+      <el-menu-item index="/user">用户中心</el-menu-item>
     </el-submenu>
     <!--    <el-menu-item index="/3" class="hidden-xs-only">PC导航1</el-menu-item>-->
 

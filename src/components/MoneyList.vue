@@ -3,6 +3,8 @@
   <div v-if="tableData != null">
     <!--使用过滤器搜索-->
     <el-table
+      show-summary
+      :summary-method="getSummaries"
       :max-height="this.screenHeight - 165"
       :data="
         tableData.filter(
@@ -72,6 +74,45 @@ export default {
   name: "MoneyList",
   props: ["screenHeight", "showdelete", "showeidt"],
   methods: {
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "总价";
+          return;
+        }
+        if (index < 4) {
+          sums[index] = " ";
+          return;
+        }
+        if (4 < index && index < 7) {
+          sums[index] = " ";
+          return;
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          if (index === 4) {
+            sums[index] += " 次";
+          }
+          if (index === 7) {
+            sums[index] += " 元";
+          }
+        } else {
+          sums[index] = "N/A";
+        }
+      });
+
+      return sums;
+    },
     confirmDelete(id, index, rows) {
       this.$confirm("确认删除物业费记录吗 ?", "提示", {
         confirmButtonText: "确定",
@@ -123,7 +164,7 @@ export default {
           try {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
-            }else {
+            } else {
               console.log("删除失败：", error);
               that.$message({
                 showClose: true,
@@ -163,7 +204,7 @@ export default {
         try {
           if (error.response.status === 405) {
             console.log("子组件收到 405");
-          }else{
+          } else {
             console.log("获取数据：", error);
             that.$message({
               showClose: true,
