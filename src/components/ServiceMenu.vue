@@ -157,9 +157,17 @@ export default {
           try {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
+            } else {
+              console.log(error.response.status);
+              console.log("获取服务列表失败：", error);
+              that.$message({
+                showClose: true,
+                message: "服务器内部错误或者服务异常，请检查： " + error,
+                offset: 66,
+                type: "warning"
+              });
             }
           } catch (e) {
-            console.log(error.response.status);
             console.log("获取服务列表失败：", error);
             that.$message({
               showClose: true,
@@ -186,6 +194,14 @@ export default {
           try {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
+            } else {
+              console.log("获取新服务ID失败：", error);
+              that.$message({
+                showClose: true,
+                message: "服务器内部错误或者服务异常，请检查： " + error,
+                offset: 66,
+                type: "warning"
+              });
             }
           } catch (e) {
             console.log("获取新服务ID失败：", error);
@@ -245,12 +261,20 @@ export default {
               try {
                 if (error.response.status === 405) {
                   console.log("子组件收到 405");
+                } else {
+                  console.log("添加失败：", error);
+                  that.$message({
+                    showClose: true,
+                    message: "警告哦，添加失败,错误原因：" + error,
+                    offset: 66,
+                    type: "warning"
+                  });
                 }
               } catch (e) {
                 console.log("添加失败：", error);
                 that.$message({
                   showClose: true,
-                  message: "警告哦，添加失败,错误原因：" + error,
+                  message: "警告哦，添加失败,网络错误：" + error,
                   offset: 66,
                   type: "warning"
                 });
@@ -319,12 +343,20 @@ export default {
           try {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
+            } else {
+              console.log("删除失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，删除失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
             }
           } catch (e) {
             console.log("删除失败：", error);
             that.$message({
               showClose: true,
-              message: "警告哦，删除失败,错误原因：" + error,
+              message: "警告哦，删除失败,网络错误：" + error,
               offset: 66,
               type: "warning"
             });
