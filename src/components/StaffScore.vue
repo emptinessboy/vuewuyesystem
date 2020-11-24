@@ -47,13 +47,19 @@ export default {
           that.tableData = response.data;
         })
         .catch(function(error) {
-          console.log("获取数据：", error);
-          that.$message({
-            showClose: true,
-            message: "连接服务器端失败，请检查网络： " + error,
-            offset: 66,
-            type: "warning"
-          });
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            }
+          } catch (e) {
+            console.log("获取数据：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务器端失败，请检查网络： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
         })
         .finally(function() {});
     }

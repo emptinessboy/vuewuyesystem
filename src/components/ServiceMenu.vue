@@ -154,13 +154,20 @@ export default {
           // console.log(that.serviceList);
         })
         .catch(function(error) {
-          console.log("获取服务列表失败：", error);
-          that.$message({
-            showClose: true,
-            message: "连接服务列表失败，请检查网络： " + error,
-            offset: 66,
-            type: "warning"
-          });
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            }
+          } catch (e) {
+            console.log(error.response.status);
+            console.log("获取服务列表失败：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务列表失败，请检查网络： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
         });
     },
     getNewUID() {
@@ -176,13 +183,19 @@ export default {
           console.log("获取新服务ID：" + that.newService.id);
         })
         .catch(function(error) {
-          console.log("获取新服务ID失败：", error);
-          that.$message({
-            showClose: true,
-            message: "连接服务器端失败，请检查网络： " + error,
-            offset: 66,
-            type: "warning"
-          });
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            }
+          } catch (e) {
+            console.log("获取新服务ID失败：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务器端失败，请检查网络： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
         });
     },
     onSubmit(formName) {
@@ -229,10 +242,11 @@ export default {
               }
             })
             .catch(function(error) {
-              if (
-                error.response.status != undefined &&
-                error.response.status != 405
-              ) {
+              try {
+                if (error.response.status === 405) {
+                  console.log("子组件收到 405");
+                }
+              } catch (e) {
                 console.log("添加失败：", error);
                 that.$message({
                   showClose: true,
@@ -302,10 +316,11 @@ export default {
           }
         })
         .catch(function(error) {
-          if (
-            error.response.status != undefined &&
-            error.response.status != 405
-          ) {
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            }
+          } catch (e) {
             console.log("删除失败：", error);
             that.$message({
               showClose: true,
