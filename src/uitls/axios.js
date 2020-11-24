@@ -60,6 +60,8 @@ axios.interceptors.response.use(
         offset: 66,
         type: "warning"
       });
+      return
+    } else {
       // 剩余的错误交给每个页面自行处理
       return Promise.reject(error);
     }

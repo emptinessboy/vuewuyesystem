@@ -129,7 +129,7 @@ export default {
               qs.stringify(postform)
             )
             .then(response => {
-              if (response.status != 200 && response.status != 405) {
+              if (response.status != 200) {
                 this.$message({
                   showClose: true,
                   message: "警告哦，充值失败，请检查服务端和数据库",
@@ -148,13 +148,18 @@ export default {
               }
             })
             .catch(function(error) {
-              console.log("充值失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，充值失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
+              if (
+                error.response.status != undefined &&
+                error.response.status != 405
+              ) {
+                console.log("充值失败：", error);
+                that.$message({
+                  showClose: true,
+                  message: "警告哦，充值失败,错误原因：" + error,
+                  offset: 66,
+                  type: "warning"
+                });
+              }
             })
             .finally(function() {
               //清空表单

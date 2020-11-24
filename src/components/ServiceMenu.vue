@@ -210,7 +210,7 @@ export default {
               qs.stringify(postform)
             )
             .then(response => {
-              if (response.status != 200 && response.status != 405) {
+              if (response.status != 200) {
                 this.$message({
                   showClose: true,
                   message: "警告哦，添加失败，请检查服务端和数据库",
@@ -229,13 +229,18 @@ export default {
               }
             })
             .catch(function(error) {
-              console.log("添加失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，添加失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
+              if (
+                error.response.status != undefined &&
+                error.response.status != 405
+              ) {
+                console.log("添加失败：", error);
+                that.$message({
+                  showClose: true,
+                  message: "警告哦，添加失败,错误原因：" + error,
+                  offset: 66,
+                  type: "warning"
+                });
+              }
             })
             .finally(function() {
               that.getNewUID();
@@ -278,7 +283,7 @@ export default {
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/servicemanage", qs.stringify(deleteid))
         .then(response => {
-          if (response.status != 200 && response.status != 405) {
+          if (response.status != 200) {
             this.$message({
               showClose: true,
               message: "警告哦，删除失败，请检查服务端和数据库",
@@ -297,13 +302,18 @@ export default {
           }
         })
         .catch(function(error) {
-          console.log("删除失败：", error);
-          that.$message({
-            showClose: true,
-            message: "警告哦，删除失败,错误原因：" + error,
-            offset: 66,
-            type: "warning"
-          });
+          if (
+            error.response.status != undefined &&
+            error.response.status != 405
+          ) {
+            console.log("删除失败：", error);
+            that.$message({
+              showClose: true,
+              message: "警告哦，删除失败,错误原因：" + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
         })
         .finally(function() {
           that.getSeriveList();

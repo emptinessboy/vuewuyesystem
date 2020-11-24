@@ -150,7 +150,7 @@ export default {
               qs.stringify(postform)
             )
             .then(response => {
-              if (response.status == 200) {
+              if (response.status === 200) {
                 //存 token 到 VUEX 的 Authorization 和 Localstorage
                 //这里使用了 JSON.stringfy 将json存入，因为localstorage不允许存对象，只能字符串
                 that.$store.commit(
@@ -170,8 +170,8 @@ export default {
               }
             })
             .catch(error => {
-              if (error.response.status == 401) {
-                this.$message({
+              if (error.response.status === 401) {
+                that.$message({
                   showClose: true,
                   message: "登录失败，用户名或密码错误",
                   offset: 70,
