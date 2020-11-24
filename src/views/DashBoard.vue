@@ -38,6 +38,7 @@
             </div>
           </el-header>
           <dash-content
+            :screenWidth="screenWidth"
             :screenHeight="screenHeight"
             :showdelete="showdelete"
             :showeidt="showeidt"
