@@ -52,7 +52,7 @@ axios.interceptors.response.use(
       router.replace({
         path: "/login",
         query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
-      });
+      }).catch(e => { console.log(e)});
       //弹出弹窗提示登录失效
       ElementUI.Message({
         showClose: true,

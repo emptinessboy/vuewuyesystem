@@ -84,9 +84,10 @@ export default {
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/logout")
         .catch(function(error) {
-          console.log("服务端错误：", error);
+          console.log("服务端错误改为本地强行注销：", error);
         })
         .finally(function() {
+          localStorage.removeItem("Authorization");
           that.$message({
             showClose: true,
             message: "注销成功！请重新登录",
