@@ -249,7 +249,7 @@ export default {
                   type: "error"
                 });
                 console.log("保存失败：", response.status);
-              } else if (response.status != 200) {
+              } else if (response.status != 200 && response.status != 405) {
                 this.$message({
                   showClose: true,
                   message: "警告哦，扣缴失败，请检查服务端和数据库",

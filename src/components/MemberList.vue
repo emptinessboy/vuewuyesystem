@@ -179,7 +179,7 @@ export default {
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(deleteno))
         .then(response => {
-          if (response.status != 200) {
+          if (response.status != 200 && response.status != 405) {
             this.$message({
               showClose: true,
               message: "警告哦，删除失败，请检查服务端和数据库",
@@ -225,7 +225,7 @@ export default {
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/listmembers", qs.stringify(eidtno))
         .then(response => {
-          if (response.status != 200) {
+          if (response.status != 200 && response.status != 405) {
             this.$message({
               showClose: true,
               message: "警告哦，保存失败，请检查服务端和数据库",

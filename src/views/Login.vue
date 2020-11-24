@@ -158,13 +158,13 @@ export default {
                   JSON.stringify(response.data[0])
                 );
                 console.log(JSON.stringify(response.data[0]));
-                this.$message({
+                console.log("登录成功");
+                that.$message({
                   showClose: true,
                   message: "恭喜你，登录成功，正在跳转",
                   offset: 66,
                   type: "success"
                 });
-                console.log("登录成功：", response.status);
                 //登录成功后跳转
                 that.$router.push("/dashboard/show");
               }
