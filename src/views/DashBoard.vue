@@ -174,6 +174,13 @@ export default {
     });
     this.screenfit();
     //监控屏幕尺寸实现响应式菜单栏
+    let that = this;
+    // settimeout 减少渲染次数，减少卡顿
+    // setTimeout(() => {
+    //   window.onresize = function() {
+    //     that.screenfit();
+    //   };
+    // }, 100);
     window.onresize = () => {
       this.screenfit();
       // console.log("用户屏幕高度" + this.screenHeight);

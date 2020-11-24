@@ -6,27 +6,37 @@
 </template>
 
 <script>
+import Event from "@/uitls/public";
 import ECharts from "vue-echarts";
 import "echarts/lib/chart/line";
 import "echarts/lib/component/polar";
 
 export default {
-  props:["screenWidth"],
+  props: ["screenWidth"],
   components: {
     "v-chart": ECharts
   },
-  methods:{
-
-  },
-  watch:{
-    screenWidth(){
+  methods: {},
+  watch: {
+    screenWidth() {
       // console.log(this.screenWidth)
       // 自适应屏幕尺寸
       this.$refs.chart.resize();
+    },
+    showbar() {
+      // settimeout 减少渲染次数，减少卡顿
+      setTimeout(() => {
+        // 侧边栏收起展开自动调整 echart 宽度
+        this.$refs.chart.resize();
+      }, 500);
     }
   },
-  created() {
-
+  created() {},
+  mounted() {
+    //在模板编译完成后执行
+    Event.$on("isshowbar", showbar => {
+      this.showbar = showbar; //箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
+    });
   },
   data() {
     let data = [];
@@ -38,6 +48,7 @@ export default {
     }
 
     return {
+      showbar: null,
       option: {
         title: {
           text: "堆叠区域图"
