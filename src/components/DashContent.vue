@@ -30,6 +30,7 @@
       :showeidt="this.showeidt"
     ></staff-list>
     <staff-score v-if="this.$route.path === '/dashboard/score'"></staff-score>
+    <Show v-if="this.$route.path === '/dashboard/show'" :screenHeight="this.screenHeight"></Show>
   </el-main>
 </template>
 
@@ -42,10 +43,12 @@ import MoneyList from "@/components/MoneyList";
 import AddMoney from "@/components/AddMoney";
 import StaffList from "@/components/StaffList";
 import StaffScore from "@/components/StaffScore";
+import Show from "@/components/Show";
 export default {
   name: "DashContent",
   props: ["screenHeight", "showdelete", "showeidt"],
   components: {
+    Show,
     StaffScore,
     StaffList,
     AddMoney,

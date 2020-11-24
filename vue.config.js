@@ -7,6 +7,10 @@ module.exports = {
   //     }
   //   }
   // },
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ],
   devServer: {
     // open: process.platform === 'darwin',
     // host: 'localhost',

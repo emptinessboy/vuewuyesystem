@@ -5,7 +5,11 @@ import store from "./store";
 import "./plugins/element.js";
 import "@/uitls/axios";
 
+import ECharts from "vue-echarts";
+Vue.component('v-chart', ECharts)
+
 Vue.config.productionTip = false;
+
 
 new Vue({
   router,
