@@ -26,7 +26,12 @@
     </el-form-item>
 
     <el-form-item label="充值金额" prop="money">
-      <el-slider :max="max" :min="min" v-model="form.money" show-input></el-slider>
+      <el-slider
+        :max="max"
+        :min="min"
+        v-model="form.money"
+        show-input
+      ></el-slider>
     </el-form-item>
 
     <!--表单隐藏项目，方便以后超级管理员开发-->
@@ -86,6 +91,11 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/listmembers")
+        .then(response => {
+          that.cnoList = response.data;
+          console.log("获取新用户列表成功");
+          // console.log(that.serviceList);
+        })
         .catch(function(error) {
           console.log("获取用户列表失败：", error);
           that.$message({
@@ -94,11 +104,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.cnoList = response.data;
-          console.log("获取新用户列表成功");
-          // console.log(that.serviceList);
         });
     },
     onSubmit(formName) {
@@ -113,7 +118,7 @@ export default {
           let postform = {
             method: "income",
             id: this.form.id,
-            money: this.form.money,
+            money: this.form.money
             // 这里为md5加盐，增加数据安全性
             // pass: md5("huxiaofan" + this.form.pass)
           };
@@ -123,15 +128,6 @@ export default {
               hxf_conf.BaseUrl + "/api/moneyapi",
               qs.stringify(postform)
             )
-            .catch(function(error) {
-              console.log("充值失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，充值失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
-            })
             .then(response => {
               if (response.status != 200) {
                 this.$message({
@@ -150,6 +146,15 @@ export default {
                 });
                 console.log("充值成功：", response.status);
               }
+            })
+            .catch(function(error) {
+              console.log("充值失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，充值失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
             })
             .finally(function() {
               //清空表单

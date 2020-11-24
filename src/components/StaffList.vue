@@ -136,15 +136,6 @@ export default {
               hxf_conf.BaseUrl + "/api/staff",
               qs.stringify(postform)
             )
-            .catch(function(error) {
-              console.log("添加失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，添加失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
-            })
             .then(response => {
               if (response.status != 200) {
                 this.$message({
@@ -164,6 +155,15 @@ export default {
                 console.log("添加员工成功：", response.status);
               }
             })
+            .catch(function(error) {
+              console.log("添加失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，添加失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
+            })
             .finally(function() {
               that.getNewEID();
               that.getStaffList();
@@ -180,6 +180,10 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
+        .then(response => {
+          that.newStaff.id = response.data[0].newid;
+          console.log("获取新员工ID：" + that.newStaff.id);
+        })
         .catch(function(error) {
           console.log("获取新员工ID失败：", error);
           that.$message({
@@ -188,10 +192,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.newStaff.id = response.data[0].newid;
-          console.log("获取新员工ID：" + that.newStaff.id);
         });
     },
     getStaffList() {
@@ -202,6 +202,9 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
+        .then(response => {
+          that.tableData = response.data;
+        })
         .catch(function(error) {
           console.log("获取数据：", error);
           that.$message({
@@ -210,9 +213,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.tableData = response.data;
         })
         .finally(function() {});
     },
@@ -245,15 +245,6 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/staff", qs.stringify(deleteno))
-        .catch(function(error) {
-          console.log("删除失败：", error);
-          that.$message({
-            showClose: true,
-            message: "警告哦，删除失败,错误原因：" + error,
-            offset: 66,
-            type: "warning"
-          });
-        })
         .then(response => {
           if (response.status != 200) {
             this.$message({
@@ -273,6 +264,15 @@ export default {
             console.log("删除成功：", eno, response.status);
             rows.splice(index, 1);
           }
+        })
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            offset: 66,
+            type: "warning"
+          });
         })
         .finally(function() {
           that.getNewEID();

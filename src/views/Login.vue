@@ -91,7 +91,7 @@
 import md5 from "js-md5";
 import axios from "axios";
 import qs from "qs";
-import {mapMutations} from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "Login",
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     //Vue中…mapMutations传递参数 通过子组件定义的方法传递参数，在…mapMutations引用。
-    ...mapMutations(['changeLogin']),
+    ...mapMutations(["changeLogin"]),
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.loginForm.uid = "";
@@ -149,6 +149,26 @@ export default {
               hxf_conf.BaseUrl + "/api/login",
               qs.stringify(postform)
             )
+            .then(response => {
+              if (response.status == 200) {
+                //存 token 到 VUEX 的 Authorization 和 Localstorage
+                //这里使用了 JSON.stringfy 将json存入，因为localstorage不允许存对象，只能字符串
+                that.$store.commit(
+                  "changeLogin",
+                  JSON.stringify(response.data[0])
+                );
+                console.log(JSON.stringify(response.data[0]));
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，登录成功，正在跳转",
+                  offset: 66,
+                  type: "success"
+                });
+                console.log("登录成功：", response.status);
+                //登录成功后跳转
+                that.$router.push("/dashboard/show");
+              }
+            })
             .catch(error => {
               if (error.response.status == 401) {
                 this.$message({
@@ -167,28 +187,10 @@ export default {
                   type: "warning"
                 });
               }
-            })
-            .then(response => {
-              if (response.status == 200) {
-
-                //存 token 到 VUEX 的 Authorization 和 Localstorage
-                //这里使用了 JSON.stringfy 将json存入，因为localstorage不允许存对象，只能字符串
-                that.$store.commit("changeLogin",JSON.stringify(response.data[0]))
-                console.log(JSON.stringify(response.data[0]))
-                this.$message({
-                  showClose: true,
-                  message: "恭喜你，登录成功，正在跳转",
-                  offset: 66,
-                  type: "success"
-                });
-                console.log("登录成功：", response.status);
-                //登录成功后跳转
-                that.$router.push("/dashboard/show")
-              }
-            })
-            .finally(function() {
               //清空表单
               that.resetForm("loginForm");
+            })
+            .finally(function() {
             });
           console.log("submit!");
           // console.log(postform);

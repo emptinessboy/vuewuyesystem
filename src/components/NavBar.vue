@@ -12,20 +12,16 @@
     z-index:11;
     width: 100%"
   >
-    <el-menu-item
-      index="/dashboard/show"
-      @click="changeshowbar"
-      style="width: 125px;"
+    <el-menu-item index="" @click="changeshowbar" style="width: 125px;"
       >HXF物业系统</el-menu-item
     >
 
     <el-submenu index="/2">
-      <template slot="title">工作台</template>
-      <el-menu-item index="2-1">选项1</el-menu-item>
-      <el-menu-item index="2-2">选项2</el-menu-item>
-      <el-menu-item index="2-3">选项3</el-menu-item>
+      <template slot="title">导航</template>
+      <el-menu-item index="2-1">首页</el-menu-item>
+      <el-menu-item index="2-2">前台</el-menu-item>
     </el-submenu>
-<!--    <el-menu-item index="/3" class="hidden-xs-only">PC导航1</el-menu-item>-->
+    <!--    <el-menu-item index="/3" class="hidden-xs-only">PC导航1</el-menu-item>-->
 
     <el-menu-item index="about" class="hidden-xs-only">关于</el-menu-item>
     <el-menu-item class="block" style="float:right;">
@@ -38,10 +34,10 @@
               >登录</el-dropdown-item
             ></router-link
           >
-          <router-link to="/logout"
-            ><el-dropdown-item v-show="userinfo.eid || userinfo.cid"
-              >注销</el-dropdown-item
-            ></router-link
+          <el-dropdown-item
+            @click="logOut"
+            v-show="userinfo.eid || userinfo.cid"
+            >注销</el-dropdown-item
           >
         </el-dropdown-menu>
       </el-dropdown>
@@ -61,6 +57,7 @@
 
 <script>
 import Event from "@/uitls/public";
+import axios from "axios";
 export default {
   name: "NavBar",
   data() {
@@ -77,6 +74,26 @@ export default {
     };
   },
   methods: {
+    logOut() {
+      let that = this;
+      // 在Vue中this始终指向Vue，但axios中this为undefined
+      // 通过 let that = this
+      // 将this保存在that中，再在函数中使用that均可
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/logout")
+        .catch(function(error) {
+          console.log("服务端错误：", error);
+        })
+        .finally(function() {
+          that.$message({
+            showClose: true,
+            message: "注销成功！请重新登录",
+            offset: 66,
+            type: "success"
+          });
+        });
+    },
     handleSelect(key, keyPath) {
       // 新标签页跳转关于
       if (key == "about") {

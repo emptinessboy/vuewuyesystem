@@ -147,6 +147,10 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/addmembers")
+        .then(response => {
+          that.form.id = response.data[0].newid;
+          console.log("获取新用户ID：" + that.form.id);
+        })
         .catch(function(error) {
           console.log("获取新用户ID失败：", error);
           that.$message({
@@ -155,10 +159,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.form.id = response.data[0].newid;
-          console.log("获取新用户ID：" + that.form.id);
         });
     },
     onSubmit(formName) {
@@ -187,15 +187,6 @@ export default {
               hxf_conf.BaseUrl + "/api/addmembers",
               qs.stringify(postform)
             )
-            .catch(function(error) {
-              console.log("添加失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，添加失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
-            })
             .then(response => {
               if (response.status != 200) {
                 this.$message({
@@ -215,10 +206,19 @@ export default {
                 console.log("保存成功：", response.status);
               }
             })
+            .catch(function(error) {
+              console.log("添加失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，添加失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
+            })
             .finally(function() {
               //清空表单
               that.getNewUID();
-              that.resetForm("form")
+              that.resetForm("form");
             });
           console.log("submit!");
           // console.log(postform);

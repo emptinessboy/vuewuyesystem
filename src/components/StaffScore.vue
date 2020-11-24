@@ -43,6 +43,9 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/staff?", { params: getform })
+        .then(response => {
+          that.tableData = response.data;
+        })
         .catch(function(error) {
           console.log("获取数据：", error);
           that.$message({
@@ -51,9 +54,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.tableData = response.data;
         })
         .finally(function() {});
     }

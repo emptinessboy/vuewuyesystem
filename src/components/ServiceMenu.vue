@@ -148,6 +148,11 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/servicemanage?", { params: getform })
+        .then(response => {
+          that.serviceList = response.data;
+          console.log("获取新服务列表成功");
+          // console.log(that.serviceList);
+        })
         .catch(function(error) {
           console.log("获取服务列表失败：", error);
           that.$message({
@@ -156,11 +161,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.serviceList = response.data;
-          console.log("获取新服务列表成功");
-          // console.log(that.serviceList);
         });
     },
     getNewUID() {
@@ -171,6 +171,10 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .get(hxf_conf.BaseUrl + "/api/servicemanage?", { params: getform })
+        .then(response => {
+          that.newService.id = response.data[0].newid;
+          console.log("获取新服务ID：" + that.newService.id);
+        })
         .catch(function(error) {
           console.log("获取新服务ID失败：", error);
           that.$message({
@@ -179,10 +183,6 @@ export default {
             offset: 66,
             type: "warning"
           });
-        })
-        .then(response => {
-          that.newService.id = response.data[0].newid;
-          console.log("获取新服务ID：" + that.newService.id);
         });
     },
     onSubmit(formName) {
@@ -209,15 +209,6 @@ export default {
               hxf_conf.BaseUrl + "/api/servicemanage",
               qs.stringify(postform)
             )
-            .catch(function(error) {
-              console.log("添加失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，添加失败,错误原因：" + error,
-                offset: 66,
-                type: "warning"
-              });
-            })
             .then(response => {
               if (response.status != 200) {
                 this.$message({
@@ -236,6 +227,15 @@ export default {
                 });
                 console.log("保存成功：", response.status);
               }
+            })
+            .catch(function(error) {
+              console.log("添加失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，添加失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
             })
             .finally(function() {
               that.getNewUID();
@@ -277,15 +277,6 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/servicemanage", qs.stringify(deleteid))
-        .catch(function(error) {
-          console.log("删除失败：", error);
-          that.$message({
-            showClose: true,
-            message: "警告哦，删除失败,错误原因：" + error,
-            offset: 66,
-            type: "warning"
-          });
-        })
         .then(response => {
           if (response.status != 200) {
             this.$message({
@@ -304,6 +295,15 @@ export default {
             });
             console.log("删除成功：", sid, response.status);
           }
+        })
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            offset: 66,
+            type: "warning"
+          });
         })
         .finally(function() {
           that.getSeriveList();

@@ -99,15 +99,6 @@ export default {
       axios
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/moneyapi", qs.stringify(deleteno))
-        .catch(function(error) {
-          console.log("删除失败：", error);
-          that.$message({
-            showClose: true,
-            message: "警告哦，删除失败,错误原因：" + error,
-            offset: 66,
-            type: "warning"
-          });
-        })
         .then(response => {
           if (response.status != 200) {
             this.$message({
@@ -128,6 +119,15 @@ export default {
             rows.splice(index, 1);
           }
         })
+        .catch(function(error) {
+          console.log("删除失败：", error);
+          that.$message({
+            showClose: true,
+            message: "警告哦，删除失败,错误原因：" + error,
+            offset: 66,
+            type: "warning"
+          });
+        })
         .finally(function() {});
     }
   },
@@ -141,6 +141,10 @@ export default {
     axios
       // eslint-disable-next-line no-undef
       .get(hxf_conf.BaseUrl + "/api/moneyapi")
+      .then(response => {
+        that.tableData = response.data;
+        console.log("获取服务记录成功");
+      })
       .catch(function(error) {
         console.log("获取数据：", error);
         that.$message({
@@ -149,10 +153,6 @@ export default {
           offset: 66,
           type: "warning"
         });
-      })
-      .then(response => {
-        that.tableData = response.data;
-        console.log("获取服务记录成功");
       })
       .finally(function() {});
   },
