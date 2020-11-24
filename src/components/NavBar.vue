@@ -87,13 +87,15 @@ export default {
           console.log("服务端错误改为本地强行注销：", error);
         })
         .finally(function() {
-          localStorage.removeItem("Authorization");
+          // 本地存储中删除 token
+          window.localStorage.removeItem("Authorization");
           that.$message({
             showClose: true,
             message: "注销成功！请重新登录",
             offset: 66,
             type: "success"
           });
+          that.$router.push("/login");
         });
     },
     handleSelect(key, keyPath) {
