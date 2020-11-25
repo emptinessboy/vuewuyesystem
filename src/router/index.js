@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import el from "element-ui/src/locale/lang/el";
 
 Vue.use(VueRouter);
 
@@ -21,6 +20,9 @@ const routes = [
   {
     path: "/user",
     name: "User",
+    meta: {
+      needLogin: true
+    },
     component: () => import("../views/User")
   },
   {
