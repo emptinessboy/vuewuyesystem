@@ -20,7 +20,7 @@
         <el-step title="上门" description="师傅已接单，正在上门"></el-step>
         <el-step title="结单" description="确认结单，完成服务"></el-step>
       </el-steps>
-      <el-button type="success" style="float: right;margin: 15px 0 15px 0;"
+      <el-button  :disabled="orderlist[0].status < 1" type="success" style="float: right;margin: 15px 0 15px 0;"
         >确认结单</el-button
       >
     </el-card>
