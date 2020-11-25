@@ -33,8 +33,8 @@
                 <span class="hidden-sm-and-down"> 次</span>
               </p>
               <p>
-                员工数：<el-tag type="warning">{{ hxf_liushui }}</el-tag>
-                <span class="hidden-sm-and-down"> 人</span>
+                总流水：<el-tag type="warning">{{ hxf_liushui }}</el-tag>
+                <span class="hidden-sm-and-down"> 元</span>
               </p> </el-col
             ><el-col :xs="0" :sm="4" :md="4" :lg="4">
               <el-divider direction="vertical" class="el-line"></el-divider>
