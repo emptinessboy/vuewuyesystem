@@ -56,7 +56,7 @@ axios.interceptors.response.use(
       //弹出弹窗提示登录失效
       ElementUI.Message({
         showClose: true,
-        message: "页面需要登录 或者 您的登录已经过期 ",
+        message: "您需要重新登录 或者 登录已经过期 ",
         offset: 66,
         type: "warning"
       });

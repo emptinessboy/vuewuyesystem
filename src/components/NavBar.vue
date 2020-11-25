@@ -1,7 +1,7 @@
 <template>
   <el-menu
     router
-    :default-active="activeIndex2"
+
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
@@ -16,10 +16,9 @@
       >HXF物业系统</el-menu-item
     >
 
-    <el-submenu index="/2">
+    <el-submenu index="">
       <template slot="title">导航</template>
-      <el-menu-item index="/">首页</el-menu-item>
-      <el-menu-item index="/dashboard/show">控制面板</el-menu-item>
+      <el-menu-item index="/dashboard/show">管理后台</el-menu-item>
       <el-menu-item index="/user">用户中心</el-menu-item>
     </el-submenu>
     <!--    <el-menu-item index="/3" class="hidden-xs-only">PC导航1</el-menu-item>-->
@@ -70,8 +69,7 @@ export default {
       },
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      activeIndex: "1",
-      activeIndex2: "/dashboard/show"
+      // activeIndex2: "/dashboard/show"
     };
   },
   methods: {

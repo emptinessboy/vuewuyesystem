@@ -146,10 +146,14 @@ export default {
       this.showbar = showbar; //箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
     });
     // settimeout 减少渲染次数，减少卡顿
-    setTimeout(() => {
-      // 侧边栏收起展开自动调整 echart 宽度
-      this.$refs.chart.resize();
-    }, 500);
+    try {
+      setTimeout(() => {
+        // 侧边栏收起展开自动调整 echart 宽度
+        this.$refs.chart.resize();
+      }, 500);
+    } catch (e) {
+      console.log(e)
+    }
   },
   data() {
     return {
