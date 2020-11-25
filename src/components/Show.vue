@@ -11,7 +11,10 @@
           <div slot="header">
             <span>入住率</span>
           </div>
-          <el-progress type="circle" :percentage="25"></el-progress> </el-card
+          <el-progress
+            type="circle"
+            :percentage="hxf_rzl"
+          ></el-progress> </el-card
       ></el-col>
 
       <el-col :xs="11" :sm="16" :md="18" :lg="18"
@@ -22,17 +25,17 @@
           <el-row justify="space-around" :gutter="10">
             <el-col :xs="0" :sm="8" :md="8" :lg="8">
               <p>
-                房屋数：<el-tag type="warning">1111</el-tag>
-                <span class="hidden-sm-and-down">间</span>
+                物业费：<el-tag type="success">{{ hxf_wyf }}</el-tag>
+                <span class="hidden-sm-and-down"> 元</span>
               </p>
               <p>
-                总余额：<el-tag type="success">2222</el-tag>
-                <span class="hidden-sm-and-down">元</span>
+                服务数：<el-tag type="info">{{ hxf_fws }}</el-tag>
+                <span class="hidden-sm-and-down"> 次</span>
               </p>
               <p>
-                服务数：<el-tag type="info">1111</el-tag>
-                <span class="hidden-sm-and-down">次</span>
-              </p></el-col
+                员工数：<el-tag type="warning">{{ hxf_liushui }}</el-tag>
+                <span class="hidden-sm-and-down"> 人</span>
+              </p> </el-col
             ><el-col :xs="0" :sm="4" :md="4" :lg="4">
               <el-divider direction="vertical" class="el-line"></el-divider>
             </el-col>
@@ -41,7 +44,9 @@
                 <p style="font-size: 1.3rem;line-height: 3rem">
                   住户<span class="hidden-xs-only">总</span>数
                 </p>
-                <span style="font-size: 2rem"><strong>1000</strong></span>
+                <span style="font-size: 2rem"
+                  ><strong>{{ hxf_zhs }} </strong></span
+                >
                 <span style="font-size: 2rem" class="hidden-xs-only"
                   ><strong>户</strong></span
                 >
@@ -93,7 +98,17 @@ export default {
       // eslint-disable-next-line no-undef
       .get(hxf_conf.BaseUrl + "/api/show")
       .then(response => {
-        //
+        // 获取并输出住户数
+        that.hxf_zhs = response.data[0].count_cno;
+        // 计算并输出入住率
+        // eslint-disable-next-line no-undef
+        that.hxf_rzl = parseInt((that.hxf_zhs / hxf_conf.hxf_fangjian) * 100);
+        //获取并计算物业费剩余
+        that.hxf_wyf = parseInt(response.data[0].count_cmoney);
+        //获取并计算服务次数
+        that.hxf_fws = parseInt(response.data[1].count_allstimes);
+        //获取并计算员工数
+        that.hxf_liushui = parseInt(response.data[1].count_allsmoney);
         // echarts 横坐标轴数据更新
         that.option.xAxis[0].data = response.data[2].days;
         // echarts 数据获取
@@ -139,6 +154,16 @@ export default {
   data() {
     return {
       showbar: null,
+      //入住率
+      hxf_rzl: 0,
+      //住户数
+      hxf_zhs: 0,
+      //物业费剩余
+      hxf_wyf: 0,
+      //服务次数
+      hxf_fws: 0,
+      //员工数
+      hxf_liushui: 0,
       option: {
         title: {
           text: "堆叠区域图"
