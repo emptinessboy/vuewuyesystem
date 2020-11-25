@@ -31,12 +31,12 @@
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/login"
-            ><el-dropdown-item v-show="!userinfo.eid && !userinfo.cid"
+            ><el-dropdown-item v-show="!userinfo.eid && !userinfo.cno"
               >登录</el-dropdown-item
             ></router-link
           >
           <span @click="logOut()">
-            <el-dropdown-item v-show="userinfo.eid || userinfo.cid"
+            <el-dropdown-item v-show="userinfo.eid || userinfo.cno"
               >注销</el-dropdown-item
             >
           </span>
@@ -50,7 +50,7 @@
     >
       <!--判断是否登录提示-->
       <span v-if="userinfo.eid != null">员工：{{ userinfo.ename }}</span>
-      <span v-else-if="userinfo.cid != null">住户：{{ userinfo.ename }}</span>
+      <span v-else-if="userinfo.cno != null">住户：{{ userinfo.cname }}</span>
       <span v-else>请先登录！</span>
     </el-menu-item>
   </el-menu>
@@ -65,7 +65,7 @@ export default {
     return {
       showbar: true,
       userinfo: {
-        cid: null,
+        cno: null,
         eid: null
       },
       circleUrl:
@@ -99,7 +99,7 @@ export default {
           });
           //清除用户信息
           that.userinfo = {
-            cid: null,
+            cno: null,
             eid: null
           };
           that.$router.push("/login");
