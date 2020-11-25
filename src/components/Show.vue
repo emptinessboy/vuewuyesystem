@@ -21,9 +21,18 @@
           </div>
           <el-row justify="space-around" :gutter="10">
             <el-col :xs="0" :sm="8" :md="8" :lg="8">
-              <p>房屋数：<el-tag type="warning">1111</el-tag> <span class="hidden-sm-and-down">间</span></p>
-              <p>总余额：<el-tag type="success">2222</el-tag> <span class="hidden-sm-and-down">元</span></p>
-              <p>服务数：<el-tag type="info">1111</el-tag> <span class="hidden-sm-and-down">次</span></p></el-col
+              <p>
+                房屋数：<el-tag type="warning">1111</el-tag>
+                <span class="hidden-sm-and-down">间</span>
+              </p>
+              <p>
+                总余额：<el-tag type="success">2222</el-tag>
+                <span class="hidden-sm-and-down">元</span>
+              </p>
+              <p>
+                服务数：<el-tag type="info">1111</el-tag>
+                <span class="hidden-sm-and-down">次</span>
+              </p></el-col
             ><el-col :xs="0" :sm="4" :md="4" :lg="4">
               <el-divider direction="vertical" class="el-line"></el-divider>
             </el-col>
@@ -54,6 +63,7 @@ import ECharts from "vue-echarts";
 import "echarts/lib/chart/line";
 import "echarts/lib/component/tooltip";
 import "echarts/lib/component/legend";
+import axios from "axios";
 export default {
   props: ["screenWidth"],
   components: {
@@ -74,7 +84,47 @@ export default {
       }, 500);
     }
   },
-  created() {},
+  created() {
+    let that = this;
+    // 在Vue中this始终指向Vue，但axios中this为undefined
+    // 通过 let that = this
+    // 将this保存在that中，再在函数中使用that均可
+    axios
+      // eslint-disable-next-line no-undef
+      .get(hxf_conf.BaseUrl + "/api/show")
+      .then(response => {
+        //
+        // echarts 横坐标轴数据更新
+        that.option.xAxis[0].data = response.data[2].days;
+        // echarts 数据获取
+        that.option.series[0].data = response.data[3].pay;
+        that.option.series[1].data = response.data[3].income;
+      })
+      .catch(function(error) {
+        try {
+          if (error.response.status === 405) {
+            console.log("子组件收到 405");
+          } else {
+            console.log("获取数据：", error);
+            that.$message({
+              showClose: true,
+              message: "服务器内部错误或者服务异常，请检查： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
+        } catch (e) {
+          console.log("获取数据：", error);
+          that.$message({
+            showClose: true,
+            message: "连接服务器端失败，请检查网络：" + error,
+            offset: 66,
+            type: "warning"
+          });
+        }
+      })
+      .finally(function() {});
+  },
   mounted() {
     //在模板编译完成后执行
     Event.$on("isshowbar", showbar => {
@@ -87,14 +137,6 @@ export default {
     }, 500);
   },
   data() {
-    let data = [];
-
-    for (let i = 0; i <= 360; i++) {
-      let t = (i / 180) * Math.PI;
-      let r = Math.sin(2 * t) * Math.cos(2 * t);
-      data.push([r, i]);
-    }
-
     return {
       showbar: null,
       option: {
@@ -137,20 +179,19 @@ export default {
           }
         ],
         series: [
-
           {
             name: "用户充值",
             type: "line",
             stack: "总量",
             areaStyle: {},
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: "服务消费",
             type: "line",
             stack: "总量",
             areaStyle: {},
-            data: [320, 332, 301, 334, 390, 330, 320]
+            data: [0, 0, 0, 0, 0, 0, 0]
           }
         ]
       }
