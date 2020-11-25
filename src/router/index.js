@@ -5,15 +5,23 @@ import el from "element-ui/src/locale/lang/el";
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home
-  // },
+  {
+    path: "/",
+    // 首页重定向到登录
+    // eslint-disable-next-line no-unused-vars
+    redirect: to =>{
+      return "/login"
+    },
+  },
   {
     path: "/login",
     name: "Login",
     component: () => import("../views/Login")
+  },
+  {
+    path: "/user",
+    name: "User",
+    component: () => import("../views/User")
   },
   {
     //实现动态路由，根据参数进入不同的控制面板

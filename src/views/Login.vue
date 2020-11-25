@@ -166,7 +166,11 @@ export default {
                   type: "success"
                 });
                 //登录成功后跳转
-                that.$router.push("/dashboard/show");
+                if (response.data[0].eid){
+                  that.$router.push("/dashboard/show");
+                }else {
+                  that.$router.push("/user");
+                }
               }
             })
             .catch(error => {
