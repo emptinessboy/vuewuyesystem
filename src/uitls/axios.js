@@ -1,6 +1,7 @@
+import store from "../store";
 // 添加请求拦截器，在请求头中加token
 import router from "@/router";
-import ElementUI from 'element-ui';
+import ElementUI from "element-ui";
 const axios = require("axios");
 
 // axios.defaults.withCredentials = true;
@@ -48,11 +49,16 @@ axios.interceptors.response.use(
     if (error.response.status === 405) {
       console.log("用户未登录：", error);
       // 这里写清除token的代码
-      localStorage.removeItem('Authorization');
-      router.replace({
-        path: "/login",
-        query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
-      }).catch(e => { console.log(e)});
+      store.commit("changeLogin", null);
+      localStorage.removeItem("Authorization");
+      router
+        .replace({
+          path: "/login",
+          query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
+        })
+        .catch(e => {
+          console.log(e);
+        });
       //弹出弹窗提示登录失效
       ElementUI.Message({
         showClose: true,

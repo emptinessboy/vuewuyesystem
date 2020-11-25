@@ -102,7 +102,7 @@ export default {
         });
     },
     confirmOrder(sid) {
-      this.$confirm("此操作将删除服务以及相关物业费记录 ?", "提示", {
+      this.$confirm("确认订购服务么 ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -114,7 +114,7 @@ export default {
           this.$message({
             type: "info",
             offset: 66,
-            message: "已取消删除"
+            message: "已取消订购"
           });
         });
     },
@@ -122,7 +122,7 @@ export default {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteid = {
-        method: "delete",
+        method: "order",
         sid: sid
       };
       axios
@@ -132,19 +132,19 @@ export default {
           if (response.status != 200) {
             this.$message({
               showClose: true,
-              message: "警告哦，删除失败，请检查服务端和数据库",
+              message: "警告哦，订购失败，请检查服务端和数据库",
               offset: 66,
               type: "warning"
             });
-            console.log("删除失败：", sid, response.status);
+            console.log("订购失败：", sid, response.status);
           } else {
             this.$message({
               showClose: true,
-              message: "恭喜你，删除记录成功",
+              message: "恭喜你，订购成功",
               offset: 66,
               type: "success"
             });
-            console.log("删除成功：", sid, response.status);
+            console.log("订购成功：", sid, response.status);
           }
         })
         .catch(function(error) {
@@ -152,10 +152,10 @@ export default {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
             } else {
-              console.log("删除失败：", error);
+              console.log("订购失败：", error);
               that.$message({
                 showClose: true,
-                message: "警告哦，删除失败,错误原因：" + error,
+                message: "警告哦，订购失败,错误原因：" + error,
                 offset: 66,
                 type: "warning"
               });

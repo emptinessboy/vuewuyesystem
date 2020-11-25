@@ -1,7 +1,6 @@
 <template>
   <el-menu
     router
-
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
@@ -68,7 +67,7 @@ export default {
         eid: null
       },
       circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
       // activeIndex2: "/dashboard/show"
     };
   },
@@ -119,7 +118,15 @@ export default {
     getUserInfo() {
       try {
         console.log("导航栏更新用户信息");
-        this.userinfo = JSON.parse(this.$store.state.Authorization);
+        if (this.$store.state.Authorization == null) {
+          this.userinfo = {
+            cno: null,
+            eid: null
+          };
+        } else {
+          this.userinfo = JSON.parse(this.$store.state.Authorization);
+        }
+        console.log(this.userinfo);
       } catch (e) {
         console.log("未获取到 LocalStorage 中的存储信息！");
       }
@@ -129,6 +136,7 @@ export default {
     // 登陆后刷新导航栏用户名
     "$store.state.Authorization": function() {
       this.getUserInfo();
+      console.log("监听到用户信息变化");
     }
   },
   created() {
