@@ -5,17 +5,26 @@
       style="margin-bottom: 20px;"
       title="小贴士"
       type="info"
-      description="点击右下角小铅笔按钮来 添加 / 删除 物业服务"
+      description="订购服务后会在顶端显示处理进度"
       show-icon
     >
       <!--头部提示结束-->
     </el-alert>
+    <el-card>
+      <el-steps :active="2">
+        <el-step title="下单" description="您已下单，请耐心等待"></el-step>
+        <el-step title="上门" description="师傅已接单，正在上门"></el-step>
+        <el-step title="结单" description="确认结单，完成服务"></el-step>
+      </el-steps>
+      <el-button type="success" style="float: right;margin: 15px 0 15px 0;">233</el-button>
+    </el-card>
+
 
     <!--响应式服务显示窗体-->
-    <el-row :gutter=20>
+    <el-row :gutter="20">
       <el-col
         :sm="24"
-        :md="11"
+        :md="12"
         v-for="(item, index) in serviceList"
         :key="index"
         style="margin-left: -10px;"
@@ -56,6 +65,7 @@ export default {
   name: "User",
   data() {
     return {
+      orderlist: {},
       serviceList: []
     };
   },
@@ -63,6 +73,44 @@ export default {
     this.getSeriveList();
   },
   methods: {
+    getOrder() {
+      let that = this;
+      let getform = {
+        want: "order"
+      };
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/user?", { params: getform })
+        .then(response => {
+          that.orderlist = response.data;
+          console.log("获取已订购的服务列表成功");
+          // console.log(that.serviceList);
+        })
+        .catch(function(error) {
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            } else {
+              console.log(error.response.status);
+              console.log("获取已订购的服务列表失败：", error);
+              that.$message({
+                showClose: true,
+                message: "服务器内部错误或者服务异常，请检查： " + error,
+                offset: 66,
+                type: "warning"
+              });
+            }
+          } catch (e) {
+            console.log("获取已订购的服务列表失败：", error);
+            that.$message({
+              showClose: true,
+              message: "连接已订购的服务列表失败，请检查网络： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
+        });
+    },
     getSeriveList() {
       let that = this;
       let getform = {
@@ -129,7 +177,15 @@ export default {
         // eslint-disable-next-line no-undef
         .post(hxf_conf.BaseUrl + "/api/user", qs.stringify(deleteid))
         .then(response => {
-          if (response.status != 200) {
+          if (response.status === 203) {
+            this.$message({
+              showClose: true,
+              message: "订购失败，您还有订单尚未处理完毕，请耐心等待！",
+              offset: 66,
+              type: "warning"
+            });
+            console.log("订购失败：", sid, response.status);
+          } else if (response.status !== 200) {
             this.$message({
               showClose: true,
               message: "警告哦，订购失败，请检查服务端和数据库",
