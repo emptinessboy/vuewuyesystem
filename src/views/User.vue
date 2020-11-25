@@ -14,8 +14,8 @@
       </el-alert>
     </div>
 
-    <el-card>
-      <el-steps :active="2">
+    <el-card v-if="orderlist.length > 0">
+      <el-steps :active="parseInt(orderlist[0].status + 1)">
         <el-step title="下单" description="您已下单，请耐心等待"></el-step>
         <el-step title="上门" description="师傅已接单，正在上门"></el-step>
         <el-step title="结单" description="确认结单，完成服务"></el-step>
@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       cmoney: "0",
-      orderlist: {},
+      orderlist: [],
       serviceList: []
     };
   },
