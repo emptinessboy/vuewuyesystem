@@ -126,7 +126,7 @@ export default {
         } else {
           this.userinfo = JSON.parse(this.$store.state.Authorization);
         }
-        console.log(this.userinfo);
+        // console.log(this.userinfo);
       } catch (e) {
         console.log("未获取到 LocalStorage 中的存储信息！");
       }
