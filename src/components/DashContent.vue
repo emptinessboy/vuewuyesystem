@@ -42,16 +42,16 @@
 </template>
 
 <script>
-import MemberList from "@/components/MemberList";
-import AddMember from "@/components/AddMember";
-import ServiceMenu from "@/components/ServiceMenu";
-import MoneyPay from "@/components/MoneyPay";
-import MoneyList from "@/components/MoneyList";
-import AddMoney from "@/components/AddMoney";
-import StaffList from "@/components/StaffList";
-import StaffScore from "@/components/StaffScore";
-import Show from "@/components/Show";
-import Order from "@/components/Order";
+import MemberList from "@/components/dashboard/MemberList";
+import AddMember from "@/components/dashboard/AddMember";
+import ServiceMenu from "@/components/dashboard/ServiceMenu";
+import MoneyPay from "@/components/dashboard/MoneyPay";
+import MoneyList from "@/components/dashboard/MoneyList";
+import AddMoney from "@/components/dashboard/AddMoney";
+import StaffList from "@/components/dashboard/StaffList";
+import StaffScore from "@/components/dashboard/StaffScore";
+import Show from "@/components/dashboard/Show";
+import Order from "@/components/dashboard/Order";
 export default {
   name: "DashContent",
   props: ["screenWidth", "screenHeight", "showdelete", "showeidt"],
