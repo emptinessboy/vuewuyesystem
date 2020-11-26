@@ -93,10 +93,10 @@ export default {
     this.getMoney();
     setTimeout(() => {
       this.getSeriveList();
-    }, 300);
+    }, 400);
     setTimeout(() => {
       this.getOrder();
-    }, 600);
+    }, 800);
   },
   methods: {
     getMoney() {
