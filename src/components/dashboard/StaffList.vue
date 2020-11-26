@@ -84,7 +84,9 @@
             />
           </template>
           <template slot-scope="scope">
+            <!--加入不是胡晓帆的disabled-->
             <el-button
+              :disabled="scope.$index === 0"
               style="float: right"
               @click.native.prevent="
                 confirmDelete(scope.row.eid, scope.$index, tableData)
