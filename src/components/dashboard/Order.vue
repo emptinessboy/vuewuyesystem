@@ -135,9 +135,6 @@ export default {
             });
             console.log("接单成功：", id, response.status);
             row.status = 2;
-            setTimeout(() => {
-              that.getData();
-            }, 500);
           }
         })
         .catch(function(error) {
@@ -163,7 +160,11 @@ export default {
             });
           }
         })
-        .finally(function() {});
+        .finally(function() {
+          setTimeout(() => {
+            that.getData();
+          }, 500);
+        });
     },
     closeOrder(id, index, rows) {
       this.$confirm("确认结单并扣费吗 ?", "提示", {
