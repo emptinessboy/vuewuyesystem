@@ -73,7 +73,7 @@
           >
           <el-menu-item-group>
             <template slot="title">workers</template>
-            <el-menu-item index="staff" v-if="isadmin">员工列表</el-menu-item>
+            <el-menu-item index="staff" v-if="isadmin == 1">员工列表</el-menu-item>
             <el-menu-item index="score">绩效考核</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -96,6 +96,7 @@ export default {
   computed: {},
   mounted() {
     this.isadmin = JSON.parse(this.$store.state.Authorization).isadmin;
+    console.log(this.isadmin)
     //在模板编译完成后执行
     Event.$on("isshowbar", showbar => {
       this.showbar = showbar; //箭头函数内部不会产生新的this，这边如果不用=>,this指代Event

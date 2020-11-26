@@ -152,7 +152,7 @@ export default {
         this.$refs.chart.resize();
       }, 500);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   },
   data() {
@@ -182,7 +182,7 @@ export default {
           }
         },
         legend: {
-          data: ["用户充值", "服务消费"]
+          data: ["服务消费", "用户充值"]
         },
         toolbox: {
           feature: {
@@ -209,14 +209,14 @@ export default {
         ],
         series: [
           {
-            name: "用户充值",
+            name: "服务消费",
             type: "line",
             stack: "总量",
             areaStyle: {},
             data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: "服务消费",
+            name: "用户充值",
             type: "line",
             stack: "总量",
             areaStyle: {},
