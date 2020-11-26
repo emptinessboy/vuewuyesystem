@@ -37,6 +37,7 @@
     <Order
       v-if="this.$route.path === '/dashboard/order'"
       :screenWidth="this.screenWidth"
+      :screenHeight="this.screenHeight"
     ></Order>
   </el-main>
 </template>
