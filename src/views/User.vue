@@ -15,14 +15,18 @@
     </div>
 
     <el-card v-if="orderlist.length > 0">
-      <el-steps :active="parseInt(orderlist[0].status + 1)">
+      <el-steps :active="parseInt(orderlist[0].status)">
         <el-step title="下单" description="您已下单，请耐心等待"></el-step>
         <el-step title="上门" description="师傅已接单，正在处理"></el-step>
-        <el-step title="结单" description="服务完成，确认结单"></el-step>
+        <el-step title="结单" description="服务完成，请确认结单"></el-step>
       </el-steps>
-      <el-button  :disabled="orderlist[0].status < 1" type="success" style="float: right;margin: 15px 0 15px 0;"
-        >确认结单</el-button
-      >
+      <el-button
+        @click="confirmConfirm(orderlist[0].sid)"
+        :disabled="orderlist[0].status < 2"
+        type="success"
+        style="float: right;margin: 15px 0 15px 0;"
+        >确认结单
+      </el-button>
     </el-card>
 
     <!--响应式服务显示窗体-->
@@ -46,15 +50,17 @@
               style="float: right;"
               type="primary"
               @click="confirmOrder(item.sid)"
-              >订购服务</el-button
-            >
+              >订购服务
+            </el-button>
           </div>
           <div class="text item">服务介绍：{{ item.sdesc }}</div>
           <div class="text item">
-            服务价格：<el-tag type="warning">{{ item.sprice }} 元</el-tag>
+            服务价格：
+            <el-tag type="warning">{{ item.sprice }} 元</el-tag>
           </div>
           <div class="text item">
-            累计服务居民：<el-tag>{{ item.stime }} 次</el-tag>
+            累计服务居民：
+            <el-tag>{{ item.stime }} 次</el-tag>
           </div>
         </el-card>
       </el-col>
@@ -85,6 +91,9 @@ export default {
       // 侧边栏收起展开自动调整 echart 宽度
       this.getOrder();
     }, 500);
+    setInterval(()=>{
+      this.getOrder();
+    }, 5000);
   },
   methods: {
     getMoney() {
@@ -198,8 +207,27 @@ export default {
           }
         });
     },
+    //确认结单弹窗
+    confirmConfirm(sid) {
+      this.$confirm("确认结单么 ?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.confirmService(sid);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            offset: 66,
+            message: "已取消结单"
+          });
+        });
+    },
+    //确认订单弹窗
     confirmOrder(sid) {
-      this.$confirm("确认订购服务么 ?", "提示", {
+      this.$confirm("确认订购服务么 ? 确认结单前不扣费。", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -215,6 +243,88 @@ export default {
           });
         });
     },
+    //向后端发送确认结单请求
+    confirmService(sid) {
+      let that = this;
+      //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
+      let deleteid = {
+        method: "confirm",
+        sid: sid
+      };
+      axios
+        // eslint-disable-next-line no-undef
+        .post(hxf_conf.BaseUrl + "/api/user", qs.stringify(deleteid))
+        .then(response => {
+          if (response.status == 205) {
+            this.$message({
+              showClose: true,
+              message: "错误：未找到用户 ID",
+              offset: 66,
+              type: "warning"
+            });
+            console.log("结单失败：", response.status);
+          } else if (response.status == 206) {
+            this.$message({
+              showClose: true,
+              message: "余额不足！请先联系工作人员充值",
+              offset: 66,
+              type: "warning"
+            });
+            console.log("结单失败：", response.status);
+          } else if (response.status == 207) {
+            this.$message({
+              showClose: true,
+              message: "内部错误：结单失败",
+              offset: 66,
+              type: "error"
+            });
+            console.log("结单失败：", response.status);
+          } else if (response.status != 200) {
+            this.$message({
+              showClose: true,
+              message: "警告哦，扣缴失败，请检查服务端和数据库",
+              offset: 66,
+              type: "error"
+            });
+            console.log("结单失败：", response.status);
+          } else {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，结单成功",
+              offset: 66,
+              type: "success"
+            });
+            console.log("结单成功：", response.status);
+          }
+        })
+        .catch(function(error) {
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            } else {
+              console.log("订购失败：", error);
+              that.$message({
+                showClose: true,
+                message: "警告哦，结单失败,错误原因：" + error,
+                offset: 66,
+                type: "warning"
+              });
+            }
+          } catch (e) {
+            console.log("删除失败：", error);
+            that.$message({
+              showClose: true,
+              message: "警告哦，结单失败,网络错误：" + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
+        })
+        .finally(function() {
+          that.getMoney();
+        });
+    },
+    //向后端发送订购请求
     orderService(sid) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
@@ -229,7 +339,7 @@ export default {
           if (response.status === 203) {
             this.$message({
               showClose: true,
-              message: "订购失败，您还有订单尚未处理完毕，请耐心等待！",
+              message: "订购失败，您还有订单尚未结单，请耐心等待！",
               offset: 66,
               type: "warning"
             });
@@ -266,16 +376,21 @@ export default {
               });
             }
           } catch (e) {
-            console.log("删除失败：", error);
+            console.log("订购失败：", error);
             that.$message({
               showClose: true,
-              message: "警告哦，删除失败,网络错误：" + error,
+              message: "警告哦，订购失败,网络错误：" + error,
               offset: 66,
               type: "warning"
             });
           }
         })
-        .finally(function() {});
+        .finally(function() {
+          setTimeout(() => {
+            // 侧边栏收起展开自动调整 echart 宽度
+            that.getOrder();
+          }, 500);
+        });
     }
   }
 };
@@ -289,14 +404,17 @@ export default {
 .item {
   margin-bottom: 18px;
 }
+
 .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
 }
+
 .clearfix:after {
   clear: both;
 }
+
 .box-card {
   width: 100%;
   margin: 10px 20px 10px 10px;
