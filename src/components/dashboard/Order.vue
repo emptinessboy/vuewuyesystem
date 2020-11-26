@@ -23,13 +23,14 @@
         <template slot-scope="scope">
           <el-button
             :disabled="scope.row.status > 1"
-            @click.native.prevent="confirmOrder(scope.row.id)"
+            @click.native.prevent="confirmOrder(scope.row.id, scope.row)"
             size="small"
           >
             <span v-show="scope.row.status > 1">已</span>
             接单
           </el-button>
           <el-button
+            :disabled="scope.row.status < 2"
             style="float: right"
             @click.native.prevent="
               closeOrder(scope.row.id, scope.$index, tableData)
@@ -52,14 +53,51 @@ export default {
   name: "Order",
   props: ["screenHeight"],
   methods: {
-    confirmOrder(id) {
+    getData() {
+      let that = this;
+      // 在Vue中this始终指向Vue，但axios中this为undefined
+      // 通过 let that = this
+      // 将this保存在that中，再在函数中使用that均可
+      axios
+        // eslint-disable-next-line no-undef
+        .get(hxf_conf.BaseUrl + "/api/orders")
+        .then(response => {
+          that.tableData = response.data;
+          console.log("获取服务记录成功");
+        })
+        .catch(function(error) {
+          try {
+            if (error.response.status === 405) {
+              console.log("子组件收到 405");
+            } else {
+              console.log("获取数据：", error);
+              that.$message({
+                showClose: true,
+                message: "服务器内部错误或者服务异常，请检查： " + error,
+                offset: 66,
+                type: "warning"
+              });
+            }
+          } catch (e) {
+            console.log("获取数据：", error);
+            that.$message({
+              showClose: true,
+              message: "连接服务器端失败，请检查网络： " + error,
+              offset: 66,
+              type: "warning"
+            });
+          }
+        })
+        .finally(function() {});
+    },
+    confirmOrder(id, row) {
       this.$confirm("确认接单吗 ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.acceptOrder(id);
+          this.acceptOrder(id, row);
         })
         .catch(() => {
           this.$message({
@@ -69,7 +107,7 @@ export default {
           });
         });
     },
-    acceptOrder(id) {
+    acceptOrder(id, row) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let deleteno = {
@@ -96,6 +134,10 @@ export default {
               type: "success"
             });
             console.log("接单成功：", id, response.status);
+            row.status = 2;
+            setTimeout(() => {
+              that.getData();
+            }, 500);
           }
         })
         .catch(function(error) {
@@ -130,7 +172,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.deleteRow(id, index, rows);
+          this.doClose(id, index, rows);
         })
         .catch(() => {
           this.$message({
@@ -140,7 +182,7 @@ export default {
           });
         });
     },
-    deleteRow(id, index, rows) {
+    doClose(id, index, rows) {
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let closeno = {
         method: "close",
@@ -193,6 +235,7 @@ export default {
             setTimeout(() => {
               // 侧边栏收起展开自动调整 echart 宽度
               rows.splice(index, 1);
+              this.getData();
             }, 500);
           }
         });
@@ -201,41 +244,7 @@ export default {
   created() {
     //获取屏幕高度
     // this.getScreenHeight();
-    let that = this;
-    // 在Vue中this始终指向Vue，但axios中this为undefined
-    // 通过 let that = this
-    // 将this保存在that中，再在函数中使用that均可
-    axios
-      // eslint-disable-next-line no-undef
-      .get(hxf_conf.BaseUrl + "/api/orders")
-      .then(response => {
-        that.tableData = response.data;
-        console.log("获取服务记录成功");
-      })
-      .catch(function(error) {
-        try {
-          if (error.response.status === 405) {
-            console.log("子组件收到 405");
-          } else {
-            console.log("获取数据：", error);
-            that.$message({
-              showClose: true,
-              message: "服务器内部错误或者服务异常，请检查： " + error,
-              offset: 66,
-              type: "warning"
-            });
-          }
-        } catch (e) {
-          console.log("获取数据：", error);
-          that.$message({
-            showClose: true,
-            message: "连接服务器端失败，请检查网络： " + error,
-            offset: 66,
-            type: "warning"
-          });
-        }
-      })
-      .finally(function() {});
+    this.getData();
   },
   data() {
     return {

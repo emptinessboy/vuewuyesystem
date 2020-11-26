@@ -214,7 +214,7 @@ export default {
     },
     //确认结单弹窗
     confirmConfirm(sid) {
-      this.$confirm("确认结单么 ?", "提示", {
+      this.$confirm("确认结单并支付物业费吗 ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -299,6 +299,10 @@ export default {
               offset: 66,
               type: "success"
             });
+            setTimeout(() => {
+              // 侧边栏收起展开自动调整 echart 宽度
+              this.getOrder();
+            }, 500);
             console.log("结单成功：", response.status);
           }
         })
