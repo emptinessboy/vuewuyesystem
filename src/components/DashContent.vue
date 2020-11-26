@@ -34,6 +34,10 @@
       v-if="this.$route.path === '/dashboard/show'"
       :screenWidth="this.screenWidth"
     ></Show>
+    <Order
+      v-if="this.$route.path === '/dashboard/order'"
+      :screenWidth="this.screenWidth"
+    ></Order>
   </el-main>
 </template>
 
@@ -47,10 +51,12 @@ import AddMoney from "@/components/AddMoney";
 import StaffList from "@/components/StaffList";
 import StaffScore from "@/components/StaffScore";
 import Show from "@/components/Show";
+import Order from "@/components/Order";
 export default {
   name: "DashContent",
   props: ["screenWidth", "screenHeight", "showdelete", "showeidt"],
   components: {
+    Order,
     Show,
     StaffScore,
     StaffList,
