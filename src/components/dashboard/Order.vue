@@ -124,7 +124,7 @@ export default {
         .finally(function() {});
     },
     closeOrder(id, index, rows) {
-      this.$confirm("确认删除物业费记录吗 ?", "提示", {
+      this.$confirm("确认结单并扣费吗 ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -136,64 +136,67 @@ export default {
           this.$message({
             type: "info",
             offset: 66,
-            message: "已取消删除"
+            message: "已取消结单"
           });
         });
     },
     deleteRow(id, index, rows) {
       let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
-      let deleteno = {
-        method: "delete",
+      let closeno = {
+        method: "close",
         id: id
       };
       axios
         // eslint-disable-next-line no-undef
-        .post(hxf_conf.BaseUrl + "/api/moneyapi", qs.stringify(deleteno))
+        .post(hxf_conf.BaseUrl + "/api/orders", qs.stringify(closeno))
         .then(response => {
-          if (response.status != 200) {
+          if (response.status === 205) {
             this.$message({
               showClose: true,
-              message: "警告哦，删除失败，请检查服务端和数据库",
+              message: "错误：未找到用户 ID",
               offset: 66,
               type: "warning"
             });
-            console.log("删除失败：", id, response.status);
+            console.log("保存失败：", response.status);
+          } else if (response.status === 206) {
+            this.$message({
+              showClose: true,
+              message: "错误：用户余额不足，需要充值",
+              offset: 66,
+              type: "warning"
+            });
+            console.log("保存失败：", response.status);
+          } else if (response.status === 207) {
+            this.$message({
+              showClose: true,
+              message: "内部错误：用户扣款失败",
+              offset: 66,
+              type: "error"
+            });
+            console.log("保存失败：", response.status);
+          } else if (response.status !== 200) {
+            this.$message({
+              showClose: true,
+              message: "警告哦，扣缴失败，请检查服务端和数据库",
+              offset: 66,
+              type: "error"
+            });
+            console.log("保存失败：", response.status);
           } else {
             this.$message({
               showClose: true,
-              message: "恭喜你，删除记录成功",
+              message: "恭喜你，扣缴成功",
               offset: 66,
               type: "success"
             });
-            console.log("删除成功：", id, response.status);
-            rows.splice(index, 1);
+            console.log("扣缴成功：", response.status);
+            setTimeout(() => {
+              // 侧边栏收起展开自动调整 echart 宽度
+              rows.splice(index, 1);
+            }, 500);
           }
-        })
-        .catch(function(error) {
-          try {
-            if (error.response.status === 405) {
-              console.log("子组件收到 405");
-            } else {
-              console.log("删除失败：", error);
-              that.$message({
-                showClose: true,
-                message: "警告哦，删除失败,错误原因： " + error,
-                offset: 66,
-                type: "warning"
-              });
-            }
-          } catch (e) {
-            console.log("删除失败：", error);
-            that.$message({
-              showClose: true,
-              message: "警告哦，删除失败,网络错误： " + error,
-              offset: 66,
-              type: "warning"
-            });
-          }
-        })
-        .finally(function() {});
+        });
     }
   },
   created() {
