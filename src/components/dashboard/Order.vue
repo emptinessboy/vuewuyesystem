@@ -141,7 +141,6 @@ export default {
         });
     },
     deleteRow(id, index, rows) {
-      let that = this;
       //这里因为后端servlet对json处理我老是调试不好就使用传统参数，需要使用qs模块反序列化为url
       let closeno = {
         method: "close",
