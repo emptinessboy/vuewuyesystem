@@ -16,7 +16,10 @@
 
     <el-card v-if="orderlist.length > 0">
       <el-steps :active="parseInt(orderlist[0].status)">
-        <el-step title="下单" description="您已下单，请耐心等待"></el-step>
+        <el-step
+          title="下单"
+          :description="'已下单服务ID：' + orderlist[0].sid + ' 请耐心等待'"
+        ></el-step>
         <el-step title="上门" description="师傅已接单，正在处理"></el-step>
         <el-step title="结单" description="服务完成，请确认结单"></el-step>
       </el-steps>
@@ -26,6 +29,11 @@
         type="success"
         style="float: right;margin: 15px 0 15px 0;"
         >确认结单
+      </el-button>
+      <el-button
+        @click="getOrder()"
+        style="float: right;margin: 15px 15px 15px 0;"
+        >刷新
       </el-button>
     </el-card>
 
@@ -91,9 +99,6 @@ export default {
       // 侧边栏收起展开自动调整 echart 宽度
       this.getOrder();
     }, 500);
-    setInterval(()=>{
-      this.getOrder();
-    }, 5000);
   },
   methods: {
     getMoney() {
