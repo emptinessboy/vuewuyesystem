@@ -337,8 +337,12 @@ export default {
     }
   },
   created() {
+    this.form.staff = this.isadmin = JSON.parse(this.$store.state.Authorization).eid;
     this.getCnoList();
-    this.getSeriveList();
+    setTimeout(() => {
+      // 延迟加载
+      this.getSeriveList();
+    }, 600);
   }
 };
 </script>

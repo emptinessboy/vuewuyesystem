@@ -339,8 +339,11 @@ export default {
   },
   created() {
     //获取屏幕高度
-    this.getNewEID();
     this.getStaffList();
+    setTimeout(() => {
+      // 延迟加载
+      this.getNewEID();
+    }, 600);
   },
   data() {
     return {

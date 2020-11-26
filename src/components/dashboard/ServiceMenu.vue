@@ -137,7 +137,10 @@ export default {
   },
   created() {
     this.getSeriveList();
-    this.getNewUID();
+    setTimeout(() => {
+      // 延迟加载
+      this.getNewUID();
+    }, 600);
   },
   methods: {
     getSeriveList() {
@@ -364,7 +367,10 @@ export default {
         })
         .finally(function() {
           that.getSeriveList();
-          that.getNewUID();
+          setTimeout(() => {
+            // 延迟加载
+            that.getNewUID();
+          }, 600);
         });
     }
   }

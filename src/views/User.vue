@@ -92,13 +92,11 @@ export default {
   created() {
     this.getMoney();
     setTimeout(() => {
-      // 侧边栏收起展开自动调整 echart 宽度
       this.getSeriveList();
-    }, 500);
+    }, 300);
     setTimeout(() => {
-      // 侧边栏收起展开自动调整 echart 宽度
       this.getOrder();
-    }, 500);
+    }, 600);
   },
   methods: {
     getMoney() {

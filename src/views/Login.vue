@@ -63,6 +63,7 @@
           </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input
+              show-password
               type="password"
               v-model="loginForm.pass"
               autocomplete="off"
@@ -166,9 +167,9 @@ export default {
                   type: "success"
                 });
                 //登录成功后跳转
-                if (response.data[0].eid){
+                if (response.data[0].eid) {
                   that.$router.push("/dashboard/show");
-                }else {
+                } else {
                   that.$router.push("/user");
                 }
               }
@@ -194,8 +195,7 @@ export default {
               //清空表单
               that.resetForm("loginForm");
             })
-            .finally(function() {
-            });
+            .finally(function() {});
           console.log("submit!");
           // console.log(postform);
         }
