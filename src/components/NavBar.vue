@@ -1,6 +1,5 @@
 <template>
   <el-menu
-    router
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
@@ -105,9 +104,18 @@ export default {
     handleSelect(key, keyPath) {
       // 新标签页跳转关于
       if (key == "about") {
-        window.open("https://git.huxiaofan.com/emptinessboy/vuewuyesystem");
+        const h = this.$createElement;
+
+        this.$notify({
+          title: '作者信息：',
+          message: h('i', { style: 'color: teal'}, '胡晓帆 2018010587')
+        });
+        setTimeout(()=>{
+          window.open("https://git.huxiaofan.com/emptinessboy/vuewuyesystem");
+        },3000)
+      }else{
+        this.$router.push({ path: key });
       }
-      // this.$router.push({ path: key });
       // console.log(key, keyPath);
     },
     changeshowbar() {
