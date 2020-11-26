@@ -16,17 +16,30 @@
           数据总览
         </el-menu-item>
 
-        <el-menu-item index="memberlist">
-          <i class="el-icon-user-solid"></i>
-          住户列表
-        </el-menu-item>
-
-        <el-menu-item index="addmember">
+        <el-menu-item index="order">
           <i class="el-icon-circle-plus"></i>
-          添加住户
+          工单管理
         </el-menu-item>
 
         <el-submenu index="1" style="">
+          <template slot="title"
+            ><i class="el-icon-user-solid"></i> 住户管理</template
+          >
+          <el-menu-item-group>
+            <template slot="title">list</template>
+            <el-menu-item index="memberlist">
+              住户列表
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="分组1">
+            <template slot="title">add</template>
+            <el-menu-item index="addmember">
+              添加住户
+            </el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+
+        <el-submenu index="2" style="">
           <template slot="title"
             ><i class="el-icon-s-open"></i> 物业服务</template
           >
@@ -40,7 +53,7 @@
           </el-menu-item-group>
         </el-submenu>
 
-        <el-submenu index="2" style="">
+        <el-submenu index="3" style="">
           <template slot="title"
             ><i class="el-icon-s-finance"></i> 物业费用</template
           >
@@ -54,7 +67,7 @@
           </el-menu-item-group>
         </el-submenu>
 
-        <el-submenu index="3" style="margin-top: auto;margin-bottom: 80px;">
+        <el-submenu index="4" style="margin-top: auto;margin-bottom: 80px;">
           <template slot="title"
             ><i class="el-icon-setting"></i> 员工管理</template
           >
