@@ -205,6 +205,7 @@ export default {
             id: this.form.id,
             name: this.form.name,
             sex: this.form.sex,
+            phone: this.form.phone,
             date: this.form.date2,
             address: this.form.address,
             money: this.form.money,
