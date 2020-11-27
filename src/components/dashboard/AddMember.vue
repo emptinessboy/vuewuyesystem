@@ -20,6 +20,11 @@
         <el-option label="女" value="女"></el-option>
       </el-select>
     </el-form-item>
+
+    <el-form-item label="手机号" prop="phone">
+      <el-input v-model="form.phone"></el-input>
+    </el-form-item>
+
     <!--这里要把校验规则prop写在下面的子ithem中-->
     <el-form-item label="入住时间" required>
       <el-col :span="11">
@@ -49,6 +54,7 @@
         </el-form-item>
       </el-col>
     </el-form-item>
+
     <el-form-item label="用户住址" prop="address">
       <el-input type="textarea" v-model="form.address"></el-input>
     </el-form-item>
@@ -90,6 +96,7 @@ export default {
         sex: "",
         date1: "",
         date2: "",
+        phone: "",
         address: "",
         money: 0,
         pass: ""
@@ -101,6 +108,15 @@ export default {
           { min: 2, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            min: 11,
+            max: 13,
+            message: "长度在 11 到 13 个字符",
+            trigger: "blur"
+          }
+        ],
         date1: [
           {
             type: "date",
@@ -155,7 +171,7 @@ export default {
           try {
             if (error.response.status === 405) {
               console.log("子组件收到 405");
-            }else {
+            } else {
               console.log("获取新用户ID失败：", error);
               that.$message({
                 showClose: true,
@@ -224,7 +240,7 @@ export default {
               try {
                 if (error.response.status === 405) {
                   console.log("子组件收到 405");
-                }else {
+                } else {
                   console.log("添加失败：", error);
                   that.$message({
                     showClose: true,

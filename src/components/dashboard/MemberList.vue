@@ -71,10 +71,23 @@
             style="width: 200px;"
           >
           </el-date-picker>
-
           <span v-show="scope.row.cno != eidtindex || showeidt == false">{{
             scope.row.cregtime
           }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="cphone" label="手机号" width="140">
+        <template slot-scope="scope">
+          <!--简单表格行内内部可编辑原理就是span 和 input 的切换显隐。-->
+          <el-input
+              placeholder="请输入手机号"
+              v-show="scope.row.cno == eidtindex && showeidt"
+              v-model="scope.row.cphone"
+          ></el-input>
+          <span v-show="scope.row.cno != eidtindex || showeidt == false">{{
+              scope.row.cphone
+            }}</span>
         </template>
       </el-table-column>
 

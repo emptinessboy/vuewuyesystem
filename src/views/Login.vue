@@ -11,7 +11,7 @@
           <el-carousel height="calc(100vh - 60px)">
             <el-carousel-item>
               <img
-                src="/static/imgs/zwu_1.jpg"
+                src="/static/imgs/zwu_3.jpg"
                 style="min-width: 100%; min-height: 100%;"
               />
             </el-carousel-item>

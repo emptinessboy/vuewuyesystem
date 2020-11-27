@@ -11,6 +11,7 @@ module.exports = {
     'vue-echarts',
     'resize-detector'
   ],
+
   devServer: {
     // open: process.platform === 'darwin',
     // host: 'localhost',
@@ -28,5 +29,7 @@ module.exports = {
     }
   },
 
-  lintOnSave: false
+  lintOnSave: false,
+  assetsDir: './',
+  publicPath: './'
 };
