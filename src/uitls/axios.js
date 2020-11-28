@@ -20,7 +20,7 @@ axios.interceptors.request.use(
         config.data = "token=" + token + "&" + config.data;
       } else if (config.method === "get") {
         // console.log(config.params);
-        if (typeof config.params == undefined) {
+        if (typeof config.params === undefined) {
           // 没有参数的处理方式
           config.url = config.url + "?token=" + token;
         } else {
