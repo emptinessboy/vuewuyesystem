@@ -12,13 +12,13 @@
 
 演示地址：https://wyglxt.app.huxiaofan.com
 
-## 技术栈
+### 技术栈
 
-前端部分：VUE.js + Element UI + VUEX(配合localstorage) + Router + axios
+前端部分：VUE.js + Element UI + VUEX(配合localstorage) + Router + axios(配合qs) + Echarts.js
 
 ======
 
-## 源代码初始化
+### 源代码初始化
 ```
 npm install
 ```
@@ -28,8 +28,29 @@ npm install
 npm run build
 ```
 
-======
-
 ## 预览图
 
+### PC 端效果
+
+PC 端登录：
+
+[![vuewyglxt_3.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_3.png)](https://up.media.everdo.cn/image/oqsl)
+
+PC 端管理员DashBoard：
+
+[![vuewyglxt_1.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_1.png)](https://up.media.everdo.cn/image/oiuy)
+
+PC 端用户前台：
+
+[![vuewyglxt_2.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_2.png)](https://up.media.everdo.cn/image/oxK0)
+
+### 移动端效果
+
+移动端管理员总览页面：
+
+[![vuewyglxt_5.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_5.png)](https://up.media.everdo.cn/image/o62D)
+
+移动端普通用户页面：
+
+[![vuewyglxt_4.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_4.png)](https://up.media.everdo.cn/image/oQYd)
 
