@@ -46,7 +46,7 @@ PC 端用户前台：
 
 ### 移动端效果
 
-移动端管理员总览页面：
+移动端管理员页面：
 
 [![vuewyglxt_5.png](https://media.everdo.cn/tank/pic-bed/2020/11/30/vuewyglxt_5.png)](https://up.media.everdo.cn/image/o62D)
 
